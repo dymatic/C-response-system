@@ -1,0 +1,9 @@
+Introduction
+
+This is a dumb AI program that must be manually taught everything. Experimental algorithms may be introduced in the future, but for now, it must be explicitly taught. The program contains a special set of instructions called Crunch Commands that allow you to play games, run shell commands, generate random sentences, etc.
+
+Installation
+The executable is ready to roll; all you need to do is invoke it from the command line. You can also compile the source.
+
+License
+I am releasing the program under my own custom license, the NRPL, which requires a log to be kept of editors.

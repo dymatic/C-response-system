@@ -1,0 +1,24 @@
+PREAMBLE:
+
+The Noran Restricted Public License was developed for the use on my software, and serves as an alternative to the viral GPL and the overly-flexible BSD license. Anybody is permitted to use the license, so long as the following terms are met.
+
+NRPL 0.01:
+    
+  License hacking
+  
+The distributor of this particular copy of the NRPL, which will be referred to as "the license", acknowledges that they will not edit the text of this license while still claiming that it is the NRPL; you must speciy that it is a different entity. Anybody is permitted to use sections of this license in their own legal binding agreements, but they are unable to claim that the text is the NRPL, regardless of how much of it has been edited.
+
+  Distributors
+  
+The accompanying content which this license governs, which will be referred to as the "product", is able to be distributed in its entirety for public, personal, and commercial use. Selling exact copies of the product is permitted, granted that you make any consumers aware of the original creator in some external form. The source code of the product MUST be made freely editable and distributed in a decompiled, textual format. Accompanying executables may be attached so long as the source code is distributed alongside it. If the source is not available, even if the executable is present, it goes against the terms of this license; regardless of whether or not the distributor is willing to relinquish the source code at a later time or in a separate archive than the executable. To reiterate, the source of the product must be available in the same archive that contains this license.
+
+  Editors
+Editing the files governed by this license is permitted except for one exception, and that is this license (See: License hacking). Editors must give credit to the original creator of the file which is being edited, or include a centralized credit file that describes the contributions of past editors and the author for commercial distribution of editted files. If the file is being publicly distributed but is not intended to generate funds, no credit must be given. If an editor besides the author did not leave a way of identifying themselves within the source or by another external mean, their credit is not required. For personal or non-commercial use credit is not necessary and the editor may do whatever they want with the source that is still allowed by this license.
+
+  Relicensing
+
+The main difference between the GPL and the NRPL is the removal of the viral properties of the GPL. Any projects containging exact copies of source code licensed under the NRPL must be licensed under another open-source license, such as the GNU General Public License, the BSD license, the MIT license, or any other free license. "Exact copies of source code" are not defined by variable names, format, or any other optional means, but rather the method used to attain the functionality that is being transfered into the project. "Method" refers to the number of variables, what constructs are used, or a method that is an obvious "snippet" of NRPL-licensed code. If the project meets the above qualifications, it can be relicensed, at which point it is no longer governed by the NRPL, but rather the license chosen to replace it. To move from another license into the NRPL, the project must meet the requirements in this license mentioned in "Distributors" and "Editors".
+
+  
+
+
