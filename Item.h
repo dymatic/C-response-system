@@ -45,7 +45,7 @@ struct wood:item
         this->age=age;
     }
     /**
-    *This will set the wood on fire, destroying it.
+    *This will set the wood on fire, changing it.
     *Only flammable items can be burned, but all wood should be declared as flammable.
     *@param the wood to burn.
     *@return 1 if the wood is burnt, 0 if it was not burnt.
@@ -156,12 +156,3 @@ struct firePlace:item
         return collector.str();
     }
 };
-/*
-What I've learned from this program:
-Use stringstream and stringstream.str();
-
-
-
-
-*/
-

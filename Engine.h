@@ -1,3 +1,8 @@
+/**
+*Appends Input.txt and Output.txt so the program can "learn".
+*@param input - The input that the program did not know.
+*@param output - What the program should respond with next time.
+*/
 void learn(string input, string output)
 {
     fstream inputs;
@@ -82,6 +87,12 @@ string randomResponse(int filelength)
     }
     return sentence.str();
 }
+/**
+*Looks through Input.txt for a match to what the user said, and returns the corresponding line in Output.txt.
+*This function will call learn(input, learning) in order to learn if input is not found.
+*@param toRespondTo - The input message
+*@return output - The message if it is found.
+*/
 string formulateResponse(string toRespondTo)
 {
     string output;
@@ -127,7 +138,10 @@ success:
         return output;
     }
 }
-
+/**
+*Crunch commands allow the user to play games, make random sentences, and execute external commands.
+*@return -1 if the user has requested termination, 0 otherwise.
+*/
 short crunch()
 {
 programCommand:
@@ -195,6 +209,7 @@ programCommand:
         cout << "> ";
         getline(cin, toDesc);
         cout << endl;
+
         if(toDesc.find("quit")!=-1)
             cout << "Quits the program."<<endl;
 

@@ -14,11 +14,11 @@ int main()
 {
     srand(time(NULL));
     cout << "You will now talk to a dumb AI that does what it's told!"<<endl;
-    cout << "What do you want to tell it? Oh, and enter # for a program command. # - rand is fun."<<endl<<endl;
+    cout << "What do you want to tell it? When you get bored, type # for games, to quit, and to execute commands."<<endl<<endl;
     string input;
     string output;
     short result=0;
-    for(int index; ; index++)
+    for(int index; ; index++)//Endless loop, the user must exit the program with # quit
     {
         cout << "User: ";
         getline(cin,input);
@@ -32,7 +32,6 @@ int main()
             cout << "Shutting down the program."<<endl;
             break;
         }
-
 
         output=formulateResponse(cleanup(input));
         cout <<"AI: "<< output<<endl;
