@@ -6,7 +6,7 @@ struct warrior
     bool alive;
     string name;
     /**
-    *Constructor for Warrior.
+    *Constructor for Warrior. Pretty soon Item.h will become the base of warriors.
     *@param health - The starting health, designed to be 1000.
     *@param strength - How strong the warrior is. This may change based on health.
     *@param incap - This is used to determine whether the warrior can go on their next move. Set this to false.

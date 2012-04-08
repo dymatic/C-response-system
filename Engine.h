@@ -156,7 +156,7 @@ programCommand:
     if(command.find("game")!=-1)
     {
         string game;
-        cout << "Name a game. The games are any systems games through terminal, ball, launch and warriors."<<endl;
+        cout << "Name a game. The games are any systems games through terminal, ball, launch, population, and warriors."<<endl;
         cout << "> ";
         getline(cin, game);
         cout << endl;
@@ -190,6 +190,10 @@ programCommand:
             else cout <<warrior1.name<<", your enemy, won."<<endl;
 
         }//If warrior
+        if(game.find("pop")!=-1)
+        {
+            populationGame();
+        }
 
     }
     if(command.find("terminal")!=-1)//Totally not needed

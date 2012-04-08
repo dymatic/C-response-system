@@ -1,4 +1,109 @@
 /**
+*Stores population and how many days have gone buy without disaster.
+*/
+struct world
+{
+
+    int timesWithout; //Times without disaster or population boom
+    int population;
+
+    string name;
+    world(int p, string s)
+    {
+        population=p;
+        name=s;
+    }
+};
+/**
+*Determines whether or not a disaster will occur.
+*@param w - The world where the disaster chance is being calculated.
+*@return the probability that the world will have a disaster.
+*/
+int willDisaster(world w)
+{
+    if(w.timesWithout<=1)
+        return 10;
+    else return w.timesWithout*10;
+}
+/**
+*The world loses a random number of people. The number can be as high as the total population.
+*@param w - The world where the disaster will occur.
+*/
+void disaster(world & w)
+{
+    w.population-=rand()%w.population;
+}
+/**
+*Calculates the chance of a population boom based on how long it has been
+* since a disaster or a boom. Disasters are slightly more likely.
+*@param w - The world where chance is being calculated.
+*
+*/
+int willBoom(world w)
+{
+    if(w.timesWithout<=1)
+        return 10;//Uses chance to increase the chance of a boom.
+    else return w.timesWithout*10;
+}
+/**
+*Adds a random number of people to the population. This number can be as high as the current population.
+*@param w- The world where the boom will occur.
+*/
+void boom(world & w)
+{
+    w.population+=rand()%w.population;//Randomly adds people, decreasing with population.
+}
+/**
+*Plays a simulation of a town during a time of an advanced rate of death.
+*The function will output and ask for input.
+*/
+void populationGame() {
+
+    int initPop;
+    string initName;
+
+    world w(100000, "Kelton"); //Just in case...
+
+    cout << "Initial Population: ";
+    cin  >> initPop;
+    cout << "\nTown name: ";
+    cin  >> initName;
+    cout << endl;
+
+    w.name=initName;
+    w.population=initPop;
+
+    int temp=-36;
+
+    cout << "Population of " <<w.name <<" over time."<<endl;
+    cout << "Initial population is "<<w.population<<"." <<endl;
+
+    for(int index=0; index<100; index++)
+    {
+
+        temp=w.population;
+
+        if(willDisaster(w)>=rand()%100)
+        {
+            disaster(w);
+            w.timesWithout=0;
+        }
+        else w.timesWithout++;
+
+        if(willBoom(w)>=rand()%100)
+        {
+            boom(w);
+            w.timesWithout=0;
+        }
+        else w.timesWithout++;
+
+        if(temp!=*&w.population)
+            cout <<"Day "<<index<<": "<< w.population <<endl;
+    }//End body loop
+    cout << "*Only days where population was lost or gained were shown."<<endl;
+    cout << "**This simulation emulates a town under an exponentially spreading disease."<<endl;
+}
+/**
 *Launches a bullet at the speed of binary!
 **/
 void launch()
