@@ -1,0 +1,26 @@
+hi
+hey
+hello
+~!END GREETING
+how are you?
+how r u
+~!END HOW ARE
+asl
+how old
+m f
+m/f
+where u from
+where are you from
+from?
+~!END ASL
+#
+terminal
+lsn
+desc
+game
+rand
+~!END CRUNCH
+launch
+warriors
+population
+~!END VOIDGAMES

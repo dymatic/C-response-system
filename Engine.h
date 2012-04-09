@@ -107,6 +107,7 @@ string formulateResponse(string toRespondTo)
 
     for(int index=0; index<100000; index++) //100000 is a lot, but it's the maximum amount of queries this robot can make.
     {
+        //gravebang comments will be loaded but not used.
         getline(inputs, possibleInputs[index]);
         getline(outputs, possibleOutputs[index]);
     }
@@ -116,12 +117,17 @@ string formulateResponse(string toRespondTo)
 
     for(unsigned int index=0; index<1000; index++)
     {
-        if(possibleInputs[index].find(toRespondTo)!=-1)
+        if(possibleInputs[index].find(toRespondTo)!=-1||toRespondTo.find("~!")!=-1)
         {
-            output=possibleOutputs[index];
+            if(possibleOutputs[index].find("~!")==-1)
+                output=possibleOutputs[index];
+            else
+            {
+                output="Comment detected.";
+            }
             goto success;
         }
-        else if(possibleInputs[index].length()==toRespondTo.length()&&rand()%10==5)//There is a 10% chance for it to "wing it".
+        else if(possibleInputs[index].length()==toRespondTo.length()&&possibleInputs[index].at(0)==toRespondTo.at(0)&&rand()%10==5)//Wing
         {
             output=possibleOutputs[index];
             goto success;
@@ -142,7 +148,9 @@ failure:
     }
 success:
     {
-        return output;
+        if(toRespondTo.find("~!")==-1)
+            return output;
+        else return "Comment detected.";
     }
 }
 /**
