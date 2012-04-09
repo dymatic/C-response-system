@@ -1,158 +1,176 @@
+/*
+A completely redone version of Item.h
+*/
 #include <iostream>
-#include <sstream>
 using namespace std;
-struct item
+/**
+*Like last time, this is the superstruct of all items.
+*/
+struct Item
 {
-    double height;
     double width;
-    double weight;
-
+    double height;
+    double durability;
     string name;
-    string stateOfMatter;
-
-    bool flammable;
-
+    bool alive;
+    double power;//Electricity, or muscular strength if the item lives.
+    double weight;
+    short x;
+    string heldItems[10];//The maximum number of held items
+    short heldItemsCount;
     /**
-    *Item is the base structure for all subclasses.
-    *Every item should have these properties.
-    *@param height - The height of the object (feet).
-    *@param width  - The width of the object (feet).
-    *@param weight - The weight of the object. (Pounds)
-    *@param name   - The GENERIC name of the item. Birch wood, for example, would be wood.
-    *@param state  - The state of matter. The common states of matter are liquid, solid, and gas.
-    *@param flame  - Whether or not the item is flammable.
+    *Constructor for Items.
+    *@param width - The width of the item.
+    *@param height - How tall the object is.
+    *@param durability - How durable the item is.
+    *@param name - The generic name of the item.
+    *@param alive - Whether or not the item is alive.
+    *@param power - How powerful, if at all, the item is.
     */
-    item(double h, double w,double weight, string n,
-         string state, bool flame)
+    Item(double width, double height, double durability, string name, bool alive, double power, double weight)
     {
-        this->height=h;
-        this->width=w;
+        this->width=width;
+        this->height=height;
+        this->durability=durability;
+        this->name=name;
+        this->alive=alive;
+        this->power=power;
         this->weight=weight;
-        this->name=n;
-        this->flammable=flame;
-        this->stateOfMatter=state;
-    }
 
-};
-struct wood:item
-{
-    string type;
-    double age;
-    wood(string type, double age, double h, double w,double weight, string n,
-         string state, bool flame):item(h,w,weight,n,state,flame)
-    {
-        this->type=type;
-        this->age=age;
+        heldItemsCount=0;
+        x=0;
     }
     /**
-    *This will set the wood on fire, changing it.
-    *Only flammable items can be burned, but all wood should be declared as flammable.
-    *@param the wood to burn.
-    *@return 1 if the wood is burnt, 0 if it was not burnt.
-    */
-    short burn(wood toBurn)
+    *Two items will make contact, reducing the first items durability by the second item's power.
+    *This is less specialized than some of the other structure's functions.
+    *@param otherItem
+    **/
+    void slam(Item otherItem)
     {
-        if(toBurn.flammable==true)
+        this->durability-=otherItem.power;
+
+        if(this->alive==true&&durability<=0)
+            alive=false;
+    }
+    /**
+    *Damages the item by a set amount.
+    *@param amount - The amount to decrease durability by.
+    */
+    void damage(double amount)
+    {
+        this->durability-=amount;
+    }
+    /**
+    *Adds the stats of the item to that of this item.
+    *@param the item to add.
+    */
+    void addItem(Item toAdd)
+    {
+
+        this->width+=toAdd.width;
+        this->height+=toAdd.height;//Questionable
+        this->durability+=toAdd.durability;
+        this->power+=toAdd.power;
+        this->weight+=toAdd.weight;
+
+        heldItems[heldItemsCount]=toAdd.name;
+        heldItemsCount++;
+    }
+};
+/**
+*Human is the superstruct for all humanoids.
+*/
+struct human:Item
+{
+    string indName;
+    /**
+    *Constructor for humans.
+        *@param indName - The name of the human, an example would be George.
+        *@param width - The width of the item.
+        *@param height - How tall the object is.
+        *@param durability - How durable the item is.
+        *@param name - The generic name of the item.
+        *@param alive - Whether or not the item is alive.
+        *@param power - How powerful, if at all, the item is.
+    */
+    human(string indName, double width, double height, double durability, string name, bool alive, double power, double weight)
+        :Item(width,height, durability, name, alive, power, weight)
+    {
+        this->indName=indName;
+    }
+};
+/**
+*Warrior is a substruct of human, which is itself derived from struct item.
+*Warriors are designed for fighting and are used in Warriors.h
+*/
+struct warrior:human
+{
+    //!How armored the warrior is.
+    double defenseVal;
+
+    //!How experienced the warrior is.
+    double experience;
+    //!How prepared the warrior is.
+    double stamina;
+    //!Whether or not the warrior is incapacitated
+    bool incap;
+    /**
+    *Constructor for warriors.
+    *@param defenseVal - How much armor the warrior has. 10 is a sane amount.
+    *@param experience - How experienced the warrior is. 10 is a sane amount.
+    *@param indName - The name of the human, an example would be George.
+    *@param width - The width of the item.
+    *@param height - How tall the object is.
+    *@param durability - How durable the item is.
+    *@param name - The generic name of the item.
+    *@param alive - Whether or not the item is alive.
+    *@param power - How powerful, if at all, the item is.
+    */
+    warrior(double defenseVal, double experience, string indName, double width, double height, double durability, string name, bool alive, double power, double weight):
+        human(indName,width,height, durability, name, alive, power, weight)
+    {
+        this->defenseVal=defenseVal;
+        this->experience=experience;
+        this->stamina=100;
+        this->alive=true;
+    }
+    /**
+    *Strikes the warrior with an attack.
+    *@param w2 - The warrior to attack.
+    */
+    void attack(warrior & w2)
+    {
+        if(!this->incap)
         {
-            this->type="Charcoal";
 
-            height/=5.;
-            width/=5.;
-            weight/=5;
-            name="Burnt wood";
-            stateOfMatter="Solid";
-            flammable=true;
-            return 1;
-        }
-        else return 0;
-    }
-    /**
-    *Returns information regarding the status of the wood.
-    *@param the wood to retrieve.
-    *@return A string representing the stats.
-    */
-    string getStats(wood toGet)
-    {
-        stringstream collector;
-        string toReturn;
-        //Substruct specific variables.
-        collector << "Type: ";
-        collector <<toGet.type;
-        collector <<"\nAge: ";
-        collector <<toGet.age;
-        //Superstruct variables.
-        collector <<"\nHeight: ";
-        collector <<toGet.height;
-        collector <<" feet.";
-        collector <<"\nWidth: ";
-        collector <<toGet.width;
-        collector <<" feet.";
-        collector <<"\nWeight: ";
-        collector <<toGet.weight;
-        collector <<" pounds.";
-        collector <<"\nGeneric name: ";
-        collector <<toGet.name;
-        collector <<"\nState of Matter: ";
-        collector <<toGet.stateOfMatter;
-        collector <<"\nFlammable: ";
+            double damage=0;
+            const int battleModifier=10;
 
-        if(toGet.flammable==true)
-            collector <<"Yes.";
-        else
-            collector << "No.";
+            damage+=this->power;
+            damage+=battleModifier;
+            damage+=this->weight/battleModifier;
+            damage+=this->experience;
+            damage+=(rand()%10)*battleModifier;
 
-        collector <<"\n";
+            damage-=w2.defenseVal;
 
-        return collector.str();
-    }
-};
-struct firePlace:item
-{
-    bool status;
-    double heat;
+            if(w2.incap==true)
+            {
+                damage+=battleModifier;
+                w2.incap=false;
+            }
 
-    firePlace(bool status, double heat,double h, double w,double weight, string n,
-              string state, bool flame) :item(h,w,weight, n,
-                          state,  flame)
-    {
-        this->status=status;
-        this->heat=heat;
-    }
-    void flickStatus()
-    {
-        if(this->status==true)
-            this->status=false;
-        else this->status=true;
-    }
-    string getStats(firePlace toGet)
-    {
-        stringstream collector;
+            if(rand()%2!=0)//50% chance
+                w2.incap=true;
 
-        if(status==true)
-            collector <<"\nOn: Yes.";
-        else
-            collector << "\nOn: No.";
 
-        collector << "\nHeat: "<<heat;
-        collector <<"\nHeight: ";
-        collector <<toGet.height;
-        collector <<" feet.";
-        collector <<"\nWidth: ";
-        collector <<toGet.width;
-        collector <<" feet.";
-        collector <<"\nWeight: ";
-        collector <<toGet.weight;
-        collector <<" pounds.";
-        collector <<"\nGeneric name: ";
-        collector <<toGet.name;
-        collector <<"\nState of Matter: ";
-        collector <<toGet.stateOfMatter;
-        collector <<"\nFlammable: ";
-        if(toGet.flammable==true)
-            collector <<"Yes.";
-        else
-            collector << "No.";
-        collector <<"\n";
-        return collector.str();
-    }
+            w2.damage(damage);
+
+            if(w2.durability<=0)
+                w2.alive=false;
+
+            damage=0;
+        }//End if
+        else this->incap=false;
+    }//End attack
 };

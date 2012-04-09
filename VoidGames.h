@@ -57,7 +57,8 @@ void boom(world & w)
 *Plays a simulation of a town during a time of an advanced rate of death.
 *The function will output and ask for input.
 */
-void populationGame() {
+void populationGame()
+{
 
     int initPop;
     string initName;
@@ -157,7 +158,7 @@ void launch()
     cout <<"Final Velocity: \t "<<vel<<" feet/sec";
     cout <<"\n  Final height: \t "<<height<<" feet" <<endl <<endl;
 
-    if(detail=true)
+    if(detail==true)
     {
         cout << "*You may be thinking that a velocity of 0 and a height above 0 is impossible. However, only forward motion is calculated by this applet."<<endl;
         cout << "If this is the case, the bullet is moving at terminal velocity. That is the fastest gravity and wind resistance allow it to fall."<<endl<<endl;
@@ -197,3 +198,53 @@ void throwBall()
         cout << "You won!"<<endl;
     else cout << "You lost."<<endl;
 }
+
+/**
+  *Simulates a battle between the warrior invoking fight an an opponent. Output is produced.
+  *@param w2 - The warrior to fight.
+  */
+void warriors(warrior w1,warrior w2)
+{
+    cout <<"    /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\"<<endl;
+    cout <<"    ===========WARRIORS================="<<endl;
+    cout <<"    /\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\"<<endl;
+    do
+    {
+        if(rand()%2==0)
+        {
+            w1.attack(w2);
+        }
+        else
+        {
+            w2.attack(w1);
+        }
+
+        if(w1.durability>0)
+        {
+
+            cout <<w1.indName<<": "<<w1.durability<<" hp remaining. ";
+            if(w1.durability>w2.durability)
+                cout <<"(winning)";
+            else if (w1.durability<w2.durability)
+                cout <<"(losing)";
+            else if (w1.durability==w2.durability)
+                cout <<"(tie)";
+
+            cout <<endl;
+        }
+        else cout <<w1.indName<<": "<<"0"<<" hp remaining."<<endl;
+
+        if(w2.durability>0)
+            cout <<w2.indName<<": "<<w2.durability<<" hp remaining."<<endl;
+
+        else cout <<w2.indName<<": "<<"0"<<" hp remaining."<<endl;
+        cout << endl;
+        usleep(100000);
+
+    }
+    while(w1.alive&&w2.alive);
+    if(w1.durability>=w2.durability)
+        cout << w1.indName<<" won!"<<endl;
+    else
+        cout << w2.indName<<" won."<<endl;
+}//End fight

@@ -1,3 +1,5 @@
+#include <vector>
+#include <sstream>
 /**
 *Appends Input.txt and Output.txt so the program can "learn".
 *@param input - The input that the program did not know.
@@ -21,14 +23,14 @@ string cleanup(string & message)
     char letters[message.length()];
     string returnMessage;
 
-    for(int index=0; index<message.length(); index++)
+    for(unsigned int index=0; index<message.length(); index++)
         letters[index]=message.at(index);
 
 
-    for(int index=0; index<message.length(); index++)
+    for(unsigned int index=0; index<message.length(); index++)
         letters[index]=tolower(letters[index]);
 
-    for(int index=0; index<message.length(); index++)
+    for(unsigned int index=0; index<message.length(); index++)
         returnMessage+=letters[index];
     return returnMessage;
 }
@@ -112,7 +114,7 @@ string formulateResponse(string toRespondTo)
     outputs.close();
     inputs.close();
 
-    for(int index=0; index<1000; index++)
+    for(unsigned int index=0; index<1000; index++)
     {
         if(possibleInputs[index].find(toRespondTo)!=-1)
         {
@@ -177,18 +179,14 @@ programCommand:
             getline(cin, name);
             cout << endl;
 
-            warrior warrior0(10000,50,false,name);
+            warrior warrior0(10.,10.,name,2.,6.,300.,"fighter",true,13.,190.);
 
             cout <<"His opponent's name: ";
             getline(cin, name);
             cout << endl;
 
-            warrior warrior1(10000,50,false,name);
-
-            if(fight(warrior0, warrior1, true))
-                cout << warrior0.name<<", your warrior,"<<" won!"<<endl;
-            else cout <<warrior1.name<<", your enemy, won."<<endl;
-
+            warrior warrior1(10.,10.,name,2.,6.,300.,"fighter",true,13.,190.);
+            warriors(warrior0, warrior1);
         }//If warrior
         if(game.find("pop")!=-1)
         {
