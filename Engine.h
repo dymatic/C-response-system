@@ -121,6 +121,11 @@ string formulateResponse(string toRespondTo)
             output=possibleOutputs[index];
             goto success;
         }
+        else if(possibleInputs[index].length()==toRespondTo.length()&&rand()%10==5)//There is a 10% chance for it to "wing it".
+        {
+            output=possibleOutputs[index];
+            goto success;
+        }
     }
 //This will only execute if proper output is not found
 failure:
