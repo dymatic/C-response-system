@@ -248,3 +248,53 @@ void warriors(warrior w1,warrior w2)
     else
         cout << w2.indName<<" won."<<endl;
 }//End fight
+/**
+*Booky is a utility for time management with reading books.
+*As a student I find myself wondering what an appropriate number of pages to read a day will be.
+*Booky tells me exactly how to manage my time, so I figured I would hardcode it into this program.
+*Like all VoidGames, this function collects input and outputs text.
+*/
+void booky()
+{
+//Even though this is a void game, its own crunch command.
+    double total, on;
+    int days;
+
+    cout << "|Booky - A time management friend|"<<endl;
+
+    cout << "How many pages does the book have?"<<endl;
+    cout << "> ";
+    cin  >> total;
+    cout << endl;
+
+    cout << "What page are you on? (0 is acceptable)"<<endl;
+    cout << "> ";
+    cin  >> on;
+    cout << endl;
+
+    cout << "How many days are left to read the book?"<<endl;
+    cout << "> ";
+    cin  >> days;
+    cout << endl;
+
+    cout << "You have "<<days<<" left to read "<<total<<" pages."<<endl;
+    cout << "You must read "<<((total-on)/days)<<" pages every day to complete the book on time."<<endl<<endl;
+}
+/**
+*Spews garbage text on the screen.
+*@param intensity - How much output to send to the screen. This is not represented on a character-by-integer basis.
+*/
+void spew(int intensity)
+{
+    char characters[65]= {'a','b','c','d','e','f','g','h','i','j','k',
+                          'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+                          '{','(','}',')','0','1','2','3','4','5','6','7','8','9',
+                          '~','!','@','#','$','%','^','&','*','_','-','+','=','\n','\\','|','`','\'',
+                          '\"','>','<','.',',','/','?'
+                         };
+
+    for(int index=0; index<intensity*100; index++)
+    {
+        cout << characters[rand()%65];
+    }
+}
