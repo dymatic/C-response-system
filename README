@@ -1,9 +1,22 @@
 Introduction
 
-This is a dumb AI program that must be manually taught everything. Experimental algorithms may be introduced in the future, but for now, it must be explicitly taught. The program contains a special set of instructions called Crunch Commands that allow you to play games, run shell commands, generate random sentences, etc.
+This is an AI program with a medium level of intelligence. At this point, you must explicitly teach it everythin. In this new version, the WING update, it has a 10% chance to guess what you wanted to tell it.
 
 Installation
-The executable is ready to roll; all you need to do is invoke it from the command line. You can also compile the source.
+The executable is ready to roll; all you need to do is invoke it from the command line.You have to make sure that it is in its own directory so that Input.txt and Output.txt do not clutter up the directory where you extract it. You can also compile the source to create an executable, but that would create extra work for minimal gain.
 
 License
 I am releasing the program under my own custom license, the NRPL, which requires a log to be kept of editors.
+
+Version
+WING - 1.5: A productive WING product.
+
+Future plans
+Explicit teaching, more crunch commands, more games (that are actually games, not simulations), and more efficient code.
+
+CHANGELOG
+WING - 1: Added the "wing" feature, where the program will try to guess what you wanted to tell it.
+WING - 1.1: Updated the "wing" feature to be more accurate, added a default input.txt and output.txt, and added gravebang comments.
+WING - 1.2: Updated the "wing" feature again and fixed gravebang issues.
+WING - 1.5: Removed all gotos and added an interface to LibMath.h
+

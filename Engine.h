@@ -1,7 +1,8 @@
-#include <vector>
 #include <sstream>
+//Home brewed
+#include "LibMath.h"
 
-int globalNumTemp;
+double globalNumTemp;
 string globalStringTemp;
 
 /**
@@ -118,6 +119,8 @@ string formulateResponse(string toRespondTo)
     outputs.close();
     inputs.close();
 
+    bool good=false;//Whether or not the statement was found.
+
     for(unsigned int index=0; index<1000; index++)
     {
         if(possibleInputs[index].find(toRespondTo)!=-1||toRespondTo.find("~!")!=-1)
@@ -125,16 +128,16 @@ string formulateResponse(string toRespondTo)
             (possibleOutputs[index].find("~!")==-1)?
             output=possibleOutputs[index]
                    :output="Comment detected.";
-            goto success;
+            good=true;
         }
         else if(possibleInputs[index].length()==toRespondTo.length()&&possibleInputs[index].at(0)==toRespondTo.at(0)&&rand()%10==5)//Wing
         {
             output=possibleOutputs[index];
-            goto success;
+            good=true;
         }
     }
 //This will only execute if proper output is not found
-failure:
+if(good==false)
     {
         cout << "I do not know how to respond. Type an acceptable answer: "<<endl;
         cout << "> ";
@@ -144,12 +147,13 @@ failure:
         learn(toRespondTo, globalStringTemp);
         return globalStringTemp;
     }
-success:
+else
     {
         if(toRespondTo.find("~!")==-1)
             return output;
         else return "Comment detected.";
     }
+good=false;
 }
 /**
 *Crunch commands allow the user to play games, make random sentences, and execute external commands.
@@ -157,7 +161,9 @@ success:
 */
 short crunch()
 {
-programCommand:
+    globalNumTemp=0;
+    globalStringTemp="";
+do{
 
     cout << "Enter the command. ls lists commands."<<endl;
     cout <<"> ";
@@ -212,6 +218,7 @@ programCommand:
         cout << endl;
         char *query = (char*)globalStringTemp.c_str();
         system(query);
+        system(" ");//Shoddy but functional
         cout << endl;
     }
 
@@ -250,15 +257,18 @@ programCommand:
         if(globalStringTemp=="booky")
             cout << "A time management program to help mitigate bookwork."<<endl;
 
+        if(globalStringTemp=="math")
+            cout << "Utilizes my math library to perform mathematical functions on data. Scientific, geometrical, and algebraic functions are included."<<endl;
+
     }
     if(globalStringTemp=="lsn")
     {
-        cout <<"quit, terminal, ls, lsn, rand, game, booky, desc. To describe what each does, use desc."<<endl;
-        goto programCommand;//SECOND goto of the program. Shoot me for not using loops.
+        cout <<"quit, terminal, ls, lsn, rand, game, booky, math, desc. To describe what each does, use desc."<<endl;
     }
+    }while(globalStringTemp=="lsn");//Loops back to the crunch command menu. This replaces a goto.
     if(globalStringTemp=="ls")
     {
-        cout <<"quit, terminal, ls, lsn, rand, game, booky, desc. To describe what each does, use desc."<<endl;
+        cout <<"quit, terminal, ls, lsn, rand, game, booky, math, desc. To describe what each does, use desc."<<endl;
     }
     if(globalStringTemp.find("rand")!=-1)
     {
@@ -275,5 +285,324 @@ programCommand:
         spew(globalNumTemp);
         cout << endl<<endl;
     }
+    if(globalStringTemp.find("math")!=-1)
+    {
+        do
+        {
+            cout << "Type a mathematic command. lsm lists them."<<endl;
+            cout << "> ";
+            cin  >> globalStringTemp;
+            cout << endl;
+            if(globalStringTemp=="lsm")
+            {
+                cout << "square, mean, stdDev, rectArea, rectVol, triArea, pyThagSide, pyThagHypot, circum, circArea,"<<endl;
+                cout << "sphereVol, cylArea, cylVol, coneArea, coneVol, denisty, celToFar, farToCel, farToKelv,"<<endl;
+                cout << "celToKelv, kelvToCel, kelvToFar, microToSec, secToMicro."<<endl<<endl;
+            }
+        }
+        while(globalStringTemp=="lsm");  //END LSM if//END LSM loop
+        //START mathematical commands.
+        if(globalStringTemp=="square")
+        {
+            cout << "Number: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Square: "<<square(globalNumTemp)<<endl;
+        }
+        if(globalStringTemp=="mean")
+        {
+            cout << "How many points of data: ";
+            cin  >> globalNumTemp;//Here globalNumTemp acts as a holder for the amount of data.
+            cout << endl;
+
+            double data[(int)globalNumTemp];
+
+            for(int index=0; index<(int)globalNumTemp; index++)
+            {
+                cout << "Data point "<<(index+1)<<": ";
+                cin  >> data[index];
+                cout << endl;
+            }
+            cout << "The mean is: "<<mean(data, (int)globalNumTemp)<<endl;
+        }//END mean
+
+        if(globalStringTemp=="stdDev")
+        {
+            cout << "How many points of data: ";
+            cin  >> globalNumTemp;//Here globalNumTemp acts as a holder for the amount of data.
+            cout << endl;
+
+            double data[(int)globalNumTemp];
+
+            for(int index=0; index<(int)globalNumTemp; index++)
+            {
+                cout << "Data point "<<(index+1)<<": ";
+                cin  >> data[index];
+                cout << endl;
+            }
+            cout << "The standard deviation is: "<<stdDev(data, (int)globalNumTemp)<<endl;
+        }//END stdDev
+
+        if(globalStringTemp=="rectArea")
+        {
+            double side2;
+
+            cout << "Length of side 1: ";
+            cin  >> globalNumTemp;//Here globalNumTemp is side 1.
+            cout << endl;
+
+            cout << "Length of side 2: ";
+            cin  >> side2;
+            cout << endl;
+
+            cout << "Area: "<<rectangularArea(globalNumTemp, side2)<<endl;
+        }//END rectArea
+
+        if(globalStringTemp=="rectVol")
+        {
+            double side2, height;
+
+            cout << "Length of side 1: ";
+            cin  >> globalNumTemp;//Here globalNumTemp is side 1.
+            cout << endl;
+
+            cout << "Length of side 2: ";
+            cin  >> side2;
+            cout << endl;
+
+            cout << "Height: ";
+            cin  >> height;
+            cout << endl;
+
+            cout << "Volume: "<<rectangularVolume(globalNumTemp, side2, height)<<endl;
+        }//END rectVol
+
+        if(globalStringTemp=="triArea")
+        {
+            double height;
+
+            cout << "Base: ";
+            cin  >> globalNumTemp;//globalNumTemp is acting as the base length.
+            cout << endl;
+
+            cout << "Height: ";
+            cin  >> height;
+            cout << endl;
+
+            cout << "Area: "<<triangularArea(globalNumTemp, height)<<endl;
+        }//END triArea
+
+        if(globalStringTemp=="pyThagHypot")
+        {
+            double side2;
+
+            cout << "Side 1: ";
+            cin  >> globalNumTemp;//globalNumTemp is side 1 of a right triangle.
+            cout << endl;
+
+            cout << "Side 2: ";
+            cin  >> side2;
+            cout << endl;
+
+            cout << "Hypotenuse: "<<pyThagHypotenuse(globalNumTemp, side2)<<endl;
+        }//END pyThagHypot
+
+        if(globalStringTemp=="pyThagSide")
+        {
+            double hypotenuse=0;
+
+            cout << "Side 1: ";
+            cin  >> globalNumTemp;//globalNumTemp is side 1 of a right triangle.
+            cout << endl;
+
+            cout << "Hypotenuse: ";
+            cin  >> hypotenuse;
+            cout << endl;
+
+            cout << "Side 2: "<<pyThagSide(globalNumTemp, hypotenuse)<<endl;
+        }//END pyThagSide
+
+        if(globalStringTemp=="circum")
+        {
+            cout << "Radius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Circumference: "<<circumference(globalNumTemp)<<endl;
+        }//END circum
+
+        if(globalStringTemp=="circArea")
+        {
+            cout << "Radius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Area: "<<circularArea(globalNumTemp)<<endl;
+        }//END circArea
+
+        if(globalStringTemp=="sphereVol")
+        {
+            cout << "Radius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Volume: "<<sphericalVolume(globalNumTemp)<<endl;
+        }//END sphereVol
+
+        if(globalStringTemp=="cylArea")
+        {
+            double height;
+
+            cout << "Radius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Height: ";
+            cin  >> height;
+            cout << endl;
+
+            cout << "Area: "<<cylindricalArea(globalNumTemp, height)<<endl;
+        }//END cylArea
+
+        if(globalStringTemp=="cylVol")
+        {
+            double height;
+
+            cout << "Radius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Height: ";
+            cin  >> height;
+            cout << endl;
+
+            cout << "Volume: "<<cylindricalVolume(globalNumTemp, height)<<endl;
+        }//END cylVol
+
+        if(globalStringTemp=="coneArea")
+        {
+            double height, slant;
+            cout << "Radius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Height: ";
+            cin  >> height;
+            cout << endl;
+
+            cout << "Slant: ";
+            cin  >> slant;
+            cout << endl;
+
+            cout << "Area: "<<coneArea(globalNumTemp, height, slant)<<endl;
+        }//END coneArea
+
+        if(globalStringTemp=="coneVol")
+        {
+            double height;
+
+            cout << "Radius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Height: ";
+            cin  >> height;
+            cout << endl;
+
+            cout << "Volume: "<<coneVolume(globalNumTemp, height)<<endl;
+        }//END coneVol
+
+        if(globalStringTemp=="density")
+        {
+            double volume;
+
+            cout << "Mass: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Volume: ";
+            cin  >> volume;
+            cout << endl;
+
+            cout << densityOf(globalNumTemp, volume)<<endl;
+        }//END density
+
+        if(globalStringTemp=="celToFar")
+        {
+            cout << "Temperature in Celcius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Fahrenheit: "<<convertCelciusToFahrenheit(globalNumTemp)<<endl;
+        }//END celToFar
+
+        if(globalStringTemp=="farToCel")
+        {
+            cout << "Temperature in Fahrenheit: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Celcius: "<<convertFahrenheitToCelcius(globalNumTemp)<<endl;
+        }
+
+        if(globalStringTemp=="farToKel")
+        {
+            cout << "Temperature in Fahrenheit: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << "Kelvin: "<<(convertFahrenheitToCelcius(globalNumTemp)-273.15)<<endl;
+        }//END farToKelv
+
+        if(globalStringTemp=="celToKelv")
+        {
+           cout << "Temperature in Celcius: ";
+           cin  >> globalNumTemp;
+           cout << endl;
+
+           cout << "Kelvin: "<<(globalNumTemp-273.15)<<endl;
+        }//END celToKelv
+
+        if(globalStringTemp=="kelvToFar")
+        {
+        cout << "Temperature in Kelvin: ";
+        cin  >> globalNumTemp;
+        cout << endl;
+
+        cout << "Fahrenheit: "<<(convertCelciusToFahrenheit(273.15+globalNumTemp))<<endl;
+        }//END kelvToFar
+
+        if(globalStringTemp=="kelvToCel")
+        {
+          cout << "Temperature in Celcius: ";
+        cin  >> globalNumTemp;
+        cout << endl;
+
+        cout << "Celcius: "<<(273.15+globalNumTemp)<<endl;
+        }//END kelvToCel
+
+        if(globalStringTemp=="microToSec")
+        {
+            cout << "Microseconds: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << microToSec(globalNumTemp)<<"Seconds"<<endl;
+        }//END microToSec
+
+        if(globalStringTemp=="secToMicro")
+        {
+            cout << "Seconds: ";
+            cin  >> globalNumTemp;
+            cout << endl;
+
+            cout << secToMicro(globalNumTemp)<<"Microseconds"<<endl;
+        }
+
+        cout << endl;
+    }//END math microToSec, secToMicro.
+    globalStringTemp="";
+    globalNumTemp=0.;
     return 0;
-}
+}//END crunch

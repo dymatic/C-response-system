@@ -19,8 +19,23 @@ lsn
 desc
 game
 rand
+booky
 ~!END CRUNCH
 launch
 warriors
 population
 ~!END VOIDGAMES
+sorry
+neat
+cool
+wonderful
+oh
+~!END COMMON 1
+lol
+lmao
+lmfao
+rofl
+haha
+ha
+hehe
+~!END LAUGHTER

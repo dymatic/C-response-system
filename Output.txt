@@ -14,13 +14,28 @@ I am from github, but now I live a bit more locally.
 I am from github, but now I live a bit more locally.
 ~!END ASL
 Command parsed.
-That is a crunch command. Type crunch [enter].
-That is a crunch command. Type crunch [enter].
-That is a crunch command. Type crunch [enter].
-That is a crunch command. Type crunch [enter].
-That is a crunch command. Type crunch [enter].
+That is a crunch command. Type # [enter].
+That is a crunch command. Type # [enter].
+That is a crunch command. Type # [enter].
+That is a crunch command. Type # [enter].
+That is a crunch command. Type # [enter].
+That is a crunch command. Type # [enter].
 ~!END CRUNCH
 That is a game. Use # [enter] game, then type that.
 That is a game. Use # [enter] game, then type that.
 That is a game. Use # [enter] game, then type that.
 ~!END VOIDGAMES
+You know, you should be.
+That was pretty neat, I'll give you that.
+Cool? It seemed downright cold to me.
+It was full of wonder as you stated.
+Oh... What?
+~!END COMMON 1
+One hundred and one what? I never understood that joke.
+Then I suggest you glue it back on.
+There is no need to curse.
+If you were rolling on the floor, then how are you able to respond?
+Okay, I'll admit. That was funny.
+"Ha" can either be pretend laughter or a sudden moment of realization.
+He... He what?
+~!END LAUGHTER
