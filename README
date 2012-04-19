@@ -1,22 +1,60 @@
-Introduction
+INTRODUCTION
 
-This is an AI program with a medium level of intelligence. At this point, you must explicitly teach it everythin. In this new version, the WING update, it has a 10% chance to guess what you wanted to tell it.
+This is an AI program with a medium level of intelligence. At this point, you must explicitly teach it everything. In this new version, the WING update, it has a 10% chance to guess what you wanted to tell it and respond. The program has a special feature called Crunch Commands that allow you to do a whole heap of things, from math to simulations.
 
-Installation
+INSTALLATION
 The executable is ready to roll; all you need to do is invoke it from the command line.You have to make sure that it is in its own directory so that Input.txt and Output.txt do not clutter up the directory where you extract it. You can also compile the source to create an executable, but that would create extra work for minimal gain.
 
-License
+LICENSE
 I am releasing the program under my own custom license, the NRPL, which requires a log to be kept of editors.
 
-Version
-WING - 1.5: A productive WING product.
+NAMING
+Mature version numbers will bring a tier identifier, a codename for that particular version. The name is based on a major feature at that revision. For example, WING is a name given to all versions of AI 1, since I added a WING feature to Engine.h.
 
-Future plans
+VERSION
+WING - 1.6: A (more) productive WING program.
+
+FUTURE PLANS
 Explicit teaching, more crunch commands, more games (that are actually games, not simulations), and more efficient code.
+
+MAP
+This software comes with a lot of files. Here is a list of what each do.
+
+Adj.txt - Used in forming random sentences. Will be further utilized. Right now, all this is used for is the rand crunch command.
+
+Adv.txt - Used in forming random sentences. Will be further utilized. Right now, all this is used for is the rand crunch command.
+
+AI - AI is the executable.
+
+EDITORS - This can be deleted if you do not want to redistribute the program. The NRPL requires that a log of contributors be kept.
+
+Engine.h - Everything relating to core functions of the program (formulation and crunch commands) go in this header.
+
+Input.txt - This is the memory of the program. It will pull from this file to match user input. ~! before a line will cause it to not be read into RAM upon execution.
+
+Item.h - Utilities relating to VoidGames.h and non-critical parts of the program go in here.
+
+LibMath.h - LibMath.h is a mature mathematics library originally written by me in Java and ported over to C++. There is an interface to LibMath.h in crunch commands.
+
+main.cpp - This is what calls functions located in other libraries upon execution.
+
+Noran Restricted Public License(0.01) - My own license that is looser than the GNU GPL, but still has some restrictions.
+
+Nouns.txt - Used in forming random sentences. Will be further utilized. Right now, all this is used for is the rand crunch command.
+
+Output.txt - This is used as a response to the corresponding line of Input.txt. One missed line could bring the whole system crashing down.
+
+Verbs.txt - Used in forming random sentences. Will be further utilized. Right now, all this is used for is the rand crunch command.
+
+VoidGames.h - Void games do not return anything. They are complete programs stuck into a function for easy invocation. These are non-critical and run simulations and interactive experiences.
+
 
 CHANGELOG
 WING - 1: Added the "wing" feature, where the program will try to guess what you wanted to tell it.
 WING - 1.1: Updated the "wing" feature to be more accurate, added a default input.txt and output.txt, and added gravebang comments.
 WING - 1.2: Updated the "wing" feature again and fixed gravebang issues.
 WING - 1.5: Removed all gotos and added an interface to LibMath.h
+WING - 1.5.1: Added a new kind of sentence to rand, documentation, and formatted.
+WING - 1.6: Added another type of WING response and fixed 
+WING - 1.6.1: Fixed a serious issue in the second WING response.
 

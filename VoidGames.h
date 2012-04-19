@@ -104,6 +104,35 @@ void populationGame()
     cout << "*Only days where population was lost or gained were shown."<<endl;
     cout << "**This simulation emulates a town under an exponentially spreading disease."<<endl;
 }
+void skip(double initialSpeed)
+{
+
+    double height=6;
+
+    int skips = rand()%10;
+    int temp=skips;
+    for(int mainLoop=0; skips>0; mainLoop++)
+    {
+
+    for(int index=0; height<0; index++)
+    {
+        height-=(7-((initialSpeed/index)+mainLoop));
+
+         if(height<0)
+        height=0;
+
+        if(height<=0)
+        {
+         break;
+        }
+
+    }//END inner loop
+    skips--;
+    height=initialSpeed-mainLoop;
+    cout << "Skip "<<(temp-skips)<<": "<<height<<" feet "<<endl;
+    }//END body loop
+    cout << "There were "<<temp<<" skips."<<endl<<endl;
+}
 /**
 *Launches a bullet at the speed of binary!
 **/
@@ -152,7 +181,7 @@ void launch()
 
     cout <<"\n          Time: \t "<<counter<<" seconds"<<endl;
 
-    if(detail=true)
+    if(detail==true)
         cout <<"*";
 
     cout <<"Final Velocity: \t "<<vel<<" feet/sec";
@@ -286,11 +315,11 @@ void booky()
 */
 void spew(int intensity)
 {
-    char characters[65]= {'a','b','c','d','e','f','g','h','i','j','k',
+    char characters[66]= {'a','b','c','d','e','f','g','h','i','j','k',
                           'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
                           '{','(','}',')','0','1','2','3','4','5','6','7','8','9',
                           '~','!','@','#','$','%','^','&','*','_','-','+','=','\n','\\','|','`','\'',
-                          '\"','>','<','.',',','/','?'
+                          '\"','>','<','.',',','/','?',' '
                          };
 
     for(int index=0; index<intensity*100; index++)

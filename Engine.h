@@ -1,8 +1,9 @@
 #include <sstream>
 //Home brewed
 #include "LibMath.h"
-
+//!Acts as an efficient storage variable for numbers.
 double globalNumTemp;
+//!Acts as an efficient storage variable for text.
 string globalStringTemp;
 
 /**
@@ -76,7 +77,7 @@ string randomResponse(int filelength)
     adjs.close();
     advs.close();
 
-    decider=rand()%3;//There are several styles of sentences. This chooses that.
+    decider=rand()%4;//There are several styles of sentences. This chooses that.
     switch(decider)
     {
     case 0:
@@ -91,6 +92,9 @@ string randomResponse(int filelength)
     case 2:
         sentence << noun[rand()%filelength]<<"s "<<verb[rand()%filelength]<<" "<<noun[rand()%filelength]<<"s.";
         break;
+
+    case 4:
+    sentence << "The "<<noun[rand()%filelength]<<" was "<<verb[rand()%filelength]<<"ed by the "<<noun[rand()%filelength]<<".";
     }
     return sentence.str();
 }
@@ -111,9 +115,15 @@ string formulateResponse(string toRespondTo)
 
     for(int index=0; index<100000; index++) //100000 is a lot, but it's the maximum amount of queries this robot can make.
     {
-        //gravebang comments will be loaded but not used.
-        getline(inputs, possibleInputs[index]);
-        getline(outputs, possibleOutputs[index]);
+        getline(inputs, globalStringTemp);
+
+        if(globalStringTemp.find("~!")==-1)
+            possibleInputs[index]=globalStringTemp;
+
+        getline(outputs, globalStringTemp);
+
+        if(globalStringTemp.find("~!")==-1)
+            possibleOutputs[index]=globalStringTemp;
     }
 
     outputs.close();
@@ -125,19 +135,25 @@ string formulateResponse(string toRespondTo)
     {
         if(possibleInputs[index].find(toRespondTo)!=-1||toRespondTo.find("~!")!=-1)
         {
-            (possibleOutputs[index].find("~!")==-1)?
+            (possibleOutputs[index].find("~!")==-1)?//This is just an extra measure.
             output=possibleOutputs[index]
                    :output="Comment detected.";
             good=true;
         }
-        else if(possibleInputs[index].length()==toRespondTo.length()&&possibleInputs[index].at(0)==toRespondTo.at(0)&&rand()%10==5)//Wing
+        else if((possibleInputs[index].length()==toRespondTo.length())&&(possibleInputs[index].at(0)==toRespondTo.at(0))&&(rand()%10==5))//Wing
         {
             output=possibleOutputs[index];
             good=true;
         }
+
+        else if(((rand()%100)==6)&&index==980)//1% Chance of this happening.
+        {
+            output=randomResponse(200);
+            good=true;
+        }
     }
 //This will only execute if proper output is not found
-if(good==false)
+    if(good==false)
     {
         cout << "I do not know how to respond. Type an acceptable answer: "<<endl;
         cout << "> ";
@@ -147,13 +163,13 @@ if(good==false)
         learn(toRespondTo, globalStringTemp);
         return globalStringTemp;
     }
-else
+    else
     {
         if(toRespondTo.find("~!")==-1)
             return output;
         else return "Comment detected.";
     }
-good=false;
+    good=false;
 }
 /**
 *Crunch commands allow the user to play games, make random sentences, and execute external commands.
@@ -163,109 +179,116 @@ short crunch()
 {
     globalNumTemp=0;
     globalStringTemp="";
-do{
-
-    cout << "Enter the command. ls lists commands."<<endl;
-    cout <<"> ";
-    getline(cin, globalStringTemp);
-    cout << endl;
-    if(globalStringTemp=="quit")
-        return -1;
-    if(globalStringTemp.find("game")!=-1)
+    do
     {
-        cout << "Name a game. The games are any systems games through terminal, ball, launch, population, and warriors."<<endl;
-        cout << "> ";
+
+        cout << "Enter the command. ls lists commands."<<endl;
+        cout <<"> ";
         getline(cin, globalStringTemp);
         cout << endl;
-
-        if(globalStringTemp.find("launch")!=-1)
-            launch();
-
-        if(globalStringTemp.find("ball")!=-1)
+        if(globalStringTemp=="quit")
+            return -1;
+        if(globalStringTemp.find("game")!=-1)
         {
-            throwBall();
-        }
-        if(globalStringTemp.find("warr")!=-1)
-        {
-            //Warrior.name stuff
-            globalStringTemp="";
-            cout <<"Your warriors name: ";
+            cout << "Name a game. The games are any systems games through terminal, ball, launch, population, skip, and warriors."<<endl;
+            cout << "> ";
             getline(cin, globalStringTemp);
             cout << endl;
 
-            warrior warrior0(10.,10.,globalStringTemp,2.,6.,300.,"fighter",true,13.,190.);
+            if(globalStringTemp.find("launch")!=-1)
+                launch();
 
+            if(globalStringTemp.find("ball")!=-1)
+            {
+                throwBall();
+            }
+
+            if(globalStringTemp=="skip")
+            {
+                skip(rand()%10);
+            }
+            if(globalStringTemp.find("warr")!=-1)
+            {
+                //Warrior.name stuff
+                globalStringTemp="";
+                cout <<"Your warriors name: ";
+                getline(cin, globalStringTemp);
+                cout << endl;
+
+                warrior warrior0(10.,10.,globalStringTemp,2.,6.,300.,"fighter",true,13.,190.);
+
+                globalStringTemp="";
+                cout <<"His opponent's name: ";
+                getline(cin, globalStringTemp);
+                cout << endl;
+
+                warrior warrior1(10.,10.,globalStringTemp,2.,6.,300.,"fighter",true,13.,190.);
+                warriors(warrior0, warrior1);
+            }//If warrior
+            if(globalStringTemp.find("pop")!=-1)
+            {
+                populationGame();
+            }
+
+        }
+        if(globalStringTemp.find("terminal")!=-1)//Totally not needed
+        {
             globalStringTemp="";
-            cout <<"His opponent's name: ";
+            cout << "Enter the shell command."<<endl;
+            cout << "> ";
             getline(cin, globalStringTemp);
             cout << endl;
-
-            warrior warrior1(10.,10.,globalStringTemp,2.,6.,300.,"fighter",true,13.,190.);
-            warriors(warrior0, warrior1);
-        }//If warrior
-        if(globalStringTemp.find("pop")!=-1)
-        {
-            populationGame();
+            char *query = (char*)globalStringTemp.c_str();
+            system(query);
+            system(" ");//Shoddy but functional
+            cout << endl;
         }
 
-    }
-    if(globalStringTemp.find("terminal")!=-1)//Totally not needed
-    {
-        globalStringTemp="";
-        cout << "Enter the shell command."<<endl;
-        cout << "> ";
-        getline(cin, globalStringTemp);
-        cout << endl;
-        char *query = (char*)globalStringTemp.c_str();
-        system(query);
-        system(" ");//Shoddy but functional
-        cout << endl;
-    }
-
-    if(globalStringTemp.find("booky")!=-1)
-        booky();
-
-    if(globalStringTemp=="desc")
-    {
-        globalStringTemp="";
-        cout << "Name the command."<<endl;
-        cout << "> ";
-        getline(cin, globalStringTemp);
-        cout << endl;
-
-        if(globalStringTemp.find("quit")!=-1)
-            cout << "Quits the program."<<endl;
-
-        if(globalStringTemp.find("terminal")!=-1)
-            cout << "Runs a command in the system shell."<<endl;
-
-        if(globalStringTemp=="ls")
-            cout << "Lists available commands and returns you to the AI."<<endl;
-
-        if(globalStringTemp=="lsn")
-            cout << "Lists available commands and returns control to program command."<<endl;
+        if(globalStringTemp.find("booky")!=-1)
+            booky();
 
         if(globalStringTemp=="desc")
-            cout << "Describes program commands. You obviously know how to use this one."<<endl;
+        {
+            globalStringTemp="";
+            cout << "Name the command."<<endl;
+            cout << "> ";
+            getline(cin, globalStringTemp);
+            cout << endl;
 
-        if(globalStringTemp=="rand")
-            cout << "Returns a random sentence."<<endl;
+            if(globalStringTemp.find("quit")!=-1)
+                cout << "Quits the program."<<endl;
 
-        if(globalStringTemp=="game")
-            cout << "Plays one of various games included."<<endl;
+            if(globalStringTemp.find("terminal")!=-1)
+                cout << "Runs a command in the system shell."<<endl;
 
-        if(globalStringTemp=="booky")
-            cout << "A time management program to help mitigate bookwork."<<endl;
+            if(globalStringTemp=="ls")
+                cout << "Lists available commands and returns you to the AI."<<endl;
 
-        if(globalStringTemp=="math")
-            cout << "Utilizes my math library to perform mathematical functions on data. Scientific, geometrical, and algebraic functions are included."<<endl;
+            if(globalStringTemp=="lsn")
+                cout << "Lists available commands and returns control to program command."<<endl;
 
+            if(globalStringTemp=="desc")
+                cout << "Describes program commands. You obviously know how to use this one."<<endl;
+
+            if(globalStringTemp=="rand")
+                cout << "Returns a random sentence."<<endl;
+
+            if(globalStringTemp=="game")
+                cout << "Plays one of various games included."<<endl;
+
+            if(globalStringTemp=="booky")
+                cout << "A time management program to help mitigate bookwork."<<endl;
+
+            if(globalStringTemp=="math")
+                cout << "Utilizes my math library to perform mathematical functions on data. Scientific, geometrical, and algebraic functions are included."<<endl;
+
+        }
+        if(globalStringTemp=="lsn")
+        {
+            cout <<"quit, terminal, ls, lsn, rand, game, booky, math, desc. To describe what each does, use desc."<<endl;
+        }
     }
-    if(globalStringTemp=="lsn")
-    {
-        cout <<"quit, terminal, ls, lsn, rand, game, booky, math, desc. To describe what each does, use desc."<<endl;
-    }
-    }while(globalStringTemp=="lsn");//Loops back to the crunch command menu. This replaces a goto.
+    while(globalStringTemp=="lsn"); //Loops back to the crunch command menu. This replaces a goto.
     if(globalStringTemp=="ls")
     {
         cout <<"quit, terminal, ls, lsn, rand, game, booky, math, desc. To describe what each does, use desc."<<endl;
@@ -557,29 +580,29 @@ do{
 
         if(globalStringTemp=="celToKelv")
         {
-           cout << "Temperature in Celcius: ";
-           cin  >> globalNumTemp;
-           cout << endl;
+            cout << "Temperature in Celcius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
 
-           cout << "Kelvin: "<<(globalNumTemp-273.15)<<endl;
+            cout << "Kelvin: "<<(globalNumTemp-273.15)<<endl;
         }//END celToKelv
 
         if(globalStringTemp=="kelvToFar")
         {
-        cout << "Temperature in Kelvin: ";
-        cin  >> globalNumTemp;
-        cout << endl;
+            cout << "Temperature in Kelvin: ";
+            cin  >> globalNumTemp;
+            cout << endl;
 
-        cout << "Fahrenheit: "<<(convertCelciusToFahrenheit(273.15+globalNumTemp))<<endl;
+            cout << "Fahrenheit: "<<(convertCelciusToFahrenheit(273.15+globalNumTemp))<<endl;
         }//END kelvToFar
 
         if(globalStringTemp=="kelvToCel")
         {
-          cout << "Temperature in Celcius: ";
-        cin  >> globalNumTemp;
-        cout << endl;
+            cout << "Temperature in Celcius: ";
+            cin  >> globalNumTemp;
+            cout << endl;
 
-        cout << "Celcius: "<<(273.15+globalNumTemp)<<endl;
+            cout << "Celcius: "<<(273.15+globalNumTemp)<<endl;
         }//END kelvToCel
 
         if(globalStringTemp=="microToSec")
