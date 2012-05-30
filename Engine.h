@@ -1,6 +1,7 @@
 #include <sstream>
 //Home brewed
 #include "LibMath.h"
+#include "Translator.h"
 //!Acts as an efficient storage variable for numbers.
 double globalNumTemp;
 //!Acts as an efficient storage variable for text.
@@ -243,6 +244,8 @@ short crunch()
             system(" ");//Shoddy but functional
             cout << endl;
         }
+        if(globalStringTemp.find("transl")!=-1)
+        transRun();
 
         if(globalStringTemp.find("booky")!=-1)
             booky();
@@ -282,16 +285,18 @@ short crunch()
             if(globalStringTemp=="math")
                 cout << "Utilizes my math library to perform mathematical functions on data. Scientific, geometrical, and algebraic functions are included."<<endl;
 
+            if(globalStringTemp=="transl")
+                cout << "Utilizes Langdiff to translate a file from a custom language."<<endl;
         }
         if(globalStringTemp=="lsn")
         {
-            cout <<"quit, terminal, ls, lsn, rand, game, booky, math, desc. To describe what each does, use desc."<<endl;
+            cout <<"quit, terminal, ls, lsn, rand, game, booky, math, transl, desc. To describe what each does, use desc."<<endl;
         }
     }
     while(globalStringTemp=="lsn"); //Loops back to the crunch command menu. This replaces a goto.
     if(globalStringTemp=="ls")
     {
-        cout <<"quit, terminal, ls, lsn, rand, game, booky, math, desc. To describe what each does, use desc."<<endl;
+        cout <<"quit, terminal, ls, lsn, rand, game, booky, math, transl, desc. To describe what each does, use desc."<<endl;
     }
     if(globalStringTemp.find("rand")!=-1)
     {
