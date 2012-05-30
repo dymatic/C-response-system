@@ -44,6 +44,8 @@ Nouns.txt - Used in forming random sentences. Will be further utilized. Right no
 
 Output.txt - This is used as a response to the corresponding line of Input.txt. One missed line could bring the whole system crashing down.
 
+Translator.h - Functions relating to the use of my langdiff technologies. See: dymatic/custom-language-translator.
+
 Verbs.txt - Used in forming random sentences. Will be further utilized. Right now, all this is used for is the rand crunch command.
 
 VoidGames.h - Void games do not return anything. They are complete programs stuck into a function for easy invocation. These are non-critical and run simulations and interactive experiences.
