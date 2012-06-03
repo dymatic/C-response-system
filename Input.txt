@@ -1,10 +1,8 @@
 hi
 hey
 hello
-~!END GREETING
 how are you?
 how r u
-~!END HOW ARE
 asl
 how old
 m f
@@ -12,7 +10,6 @@ m/f
 where u from
 where are you from
 from?
-~!END ASL
 #
 terminal
 lsn
@@ -20,17 +17,14 @@ desc
 game
 rand
 booky
-~!END CRUNCH
 launch
 warriors
 population
-~!END VOIDGAMES
 sorry
 neat
 cool
 wonderful
 oh
-~!END COMMON 1
 lol
 lmao
 lmfao
@@ -38,4 +32,17 @@ rofl
 haha
 ha
 hehe
-~!END LAUGHTER
+hello.
+
+sup
+sorry to hear that, program.
+but
+but i am the only
+hello ai!
+glad to be back
+good.
+no. i hate that kind of stuff.
+glad to be back.
+that was trite.
+i think it's game time.
+math

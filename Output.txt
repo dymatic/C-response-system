@@ -1,10 +1,8 @@
 Hello to you as well, user.
 Hello to you as well, user.
 Hello to you as well, user.
-~!END GREETING
 I am doing well, for a program.
 Great. I would prefer you use full words.
-~!END HOW ARE
 I have always been, I am neither a man nor woman, and I live within a hard drive.
 I have always been. Well, since you downloaded me.
 I am neither.
@@ -12,7 +10,6 @@ I am neither.
 I am from github, but now I live a bit more locally.
 I am from github, but now I live a bit more locally.
 I am from github, but now I live a bit more locally.
-~!END ASL
 Command parsed.
 That is a crunch command. Type # [enter].
 That is a crunch command. Type # [enter].
@@ -20,17 +17,14 @@ That is a crunch command. Type # [enter].
 That is a crunch command. Type # [enter].
 That is a crunch command. Type # [enter].
 That is a crunch command. Type # [enter].
-~!END CRUNCH
 That is a game. Use # [enter] game, then type that.
 That is a game. Use # [enter] game, then type that.
 That is a game. Use # [enter] game, then type that.
-~!END VOIDGAMES
 You know, you should be.
 That was pretty neat, I'll give you that.
 Cool? It seemed downright cold to me.
 It was full of wonder as you stated.
 Oh... What?
-~!END COMMON 1
 One hundred and one what? I never understood that joke.
 Then I suggest you glue it back on.
 There is no need to curse.
@@ -38,4 +32,17 @@ If you were rolling on the floor, then how are you able to respond?
 Okay, I'll admit. That was funny.
 "Ha" can either be pretend laughter or a sudden moment of realization.
 He... He what?
-~!END LAUGHTER
+You too.
+
+Not much on my end. It gets boring when you don't run me!
+It's fine.
+But... What?
+The only what?
+Hello to you as well, user. Good to see you have returned.
+And, as stated, I am glad for your return. How has your day been?
+Splendid. Would you like to hear about mine?
+Too bad. It has been... Something.
+
+You didn't design me with talkativity in mind.
+You know what I meant.
+Whoops.

@@ -61,20 +61,32 @@ struct Item
         this->durability-=amount;
     }
     /**
-    *Adds the stats of the item to that of this item.
-    *@param the item to add.
+    *Instead of returning a new value, this operator adds the stats
+    *AND assigns them.
     */
-    void addItem(Item toAdd)
+    Item operator +(Item otherItem)
     {
 
-        this->width+=toAdd.width;
-        this->height+=toAdd.height;//Questionable
-        this->durability+=toAdd.durability;
-        this->power+=toAdd.power;
-        this->weight+=toAdd.weight;
+        this->width+=otherItem.width;
+        this->height+=otherItem.height;//Questionable
+        this->durability+=otherItem.durability;
+        this->power+=otherItem.power;
+        this->weight+=otherItem.weight;
 
-        heldItems[heldItemsCount]=toAdd.name;
+        heldItems[heldItemsCount]=otherItem.name;
         heldItemsCount++;
+    }
+    /**
+        *Instead of returning a new value, this operator adds the stats
+        *AND assigns them.
+        */
+    Item operator -(Item otherItem)
+    {
+        this->width-=otherItem.width;
+        this->height-=otherItem.height;
+        this->durability-=otherItem.durability;
+        this->power-=otherItem.power;
+        this->weight-=otherItem.weight;
     }
 };
 /**
