@@ -59,7 +59,7 @@ int main(int argc, char**argv){
             cout << "I do not know how to reply to "<<command<<", please tell me.\n";
             cout << "> ";
             getline(cin,learnSentence);
-            learn(command,learnSentence);
+            learn(sanitizeInput(command),learnSentence);
             cout << "Got it. So, " << learnSentence<<endl<<endl;
         }//END learn
         else
@@ -69,4 +69,3 @@ int main(int argc, char**argv){
         cout << endl;
     }//END main loop
 }//END main
-

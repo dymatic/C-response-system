@@ -93,6 +93,7 @@ int crnchID()
             cout << "Crunch ID: "<<index<<endl;
     }
     cout << endl;
+    return 0;
 }
 
 /**
@@ -108,7 +109,7 @@ int desc()
     cout << endl;
 
     if(helper.find("<")!=-1&&helper.find(">")!=-1)
-        cout << docs[atoi(helper.substr(helper.find("<"),helper.find(">")).c_str())];//Gets number in between <>'s
+        cout << docs[atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str())];//Gets number in between <>'s
     else { //BEGIN name things
         for(int index=0; index<members; index++)
             if(funcNames[index]==helper) {
@@ -116,6 +117,7 @@ int desc()
                 break;
             }
     }//END name search
+    return 0;
 }
 /**
 *Core utility that returns all of the information of all crunch commands.
@@ -128,7 +130,7 @@ for(int index=0; index<members;index++)
    cout << "ID: "  <<index<<endl;
    cout << "Desc: "<<docs[index]<<endl<<endl;
 }
-
+return 0;
 }
 /**
 *Core utility that returns all of the information for a single crunch command.
@@ -142,7 +144,7 @@ int isc(){
     cout << endl;
 
     if(helper.find("<")!=-1&&helper.find(">")!=-1){
-        idT = atoi(helper.substr(helper.find("<"),helper.find(">")).c_str());//Gets number in between <>'s
+        idT = atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str());//Gets number in between <>'s
    cout << "Name: "<<funcNames[idT]<<endl;
    cout << "ID: "  <<idT<<endl;
    cout << "Desc: "<<docs[idT]<<endl<<endl;

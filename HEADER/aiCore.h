@@ -1,5 +1,5 @@
 /*
-  *AI 3 - Complete Rewuire
+  *AI 3 - Complete Rewire
   *This is free sofware with absolutely no warranty, expressed or implied.
   *The program is licensed under the GNU General Public License revision 2.
   *If you did not receive a copy of the GNU general public license, contact the
@@ -40,17 +40,31 @@ string learn(std::string,std::string);
 int linec(string file);
 
 /*FUNCTION IMPLEMENTATIONS*/
-
+//!Not my work
+void replaceAll(std::string& str,  std::string& from,  std::string& to) {
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length();
+    }
+}
 /**
 *Makes the input conform to a certain set of standards.
 *Whitespace is trimmed and it is made lowercase.
 */
 string sanitizeInput(string input){
+    char letters[input.length()];
     string returnMessage;
 
-    for(unsigned int index=0; index<input.length(); index++) {
-        returnMessage+=tolower(input.at(index));
-    }
+    for(unsigned int index=0; index<input.length(); index++)
+        letters[index]=input.at(index);
+
+
+    for(unsigned int index=0; index<input.length(); index++)
+        letters[index]=tolower(letters[index]);
+
+    for(unsigned int index=0; index<input.length(); index++)
+        returnMessage+=letters[index];
     return returnMessage;
 }
 /**
@@ -117,23 +131,27 @@ void clearMemory(){
   *@return response - The response, "learn(toReplyTo)" if a learning is required.
   */
 string formulateResponse(string toReplyTo){
-    string buff=toReplyTo;
-    toReplyTo=sanitizeInput(buff);
+    bool good=false;//Whether or not the statement was found.
+    string buff = sanitizeInput(toReplyTo);
 
-   //First, searches the input strings for a match.
-    for(int index=0; index<Gmembers; index++){
-        if(input[index]==toReplyTo){
-            return output[index];
+    for(unsigned int index=0; index<Gmembers; index++)
+    {
+        if(input[index].find(buff)!=-1){
+            return output[index];//If an exact match is found.
+        good=true;
+        }
+
+        else if((input[index].length()==buff.length())&&(rand()%Gmembers==5)){//Wing
+            return output[index];//If the lengths are the same
+            good=true;
         }
     }
-    //Then, it searches for something that matches it. This is a wing feature.
-    for(int index=0; index<Gmembers; index++){
-        if(input[index].length()==toReplyTo.length()&&rand()%wing==wing-1)
-            return output[index];
-    }
-    //When all else fails, it returns a message to main that will then call the learning function, rather than directly.
-    return "learn(toReplyTo)";
+//This will only execute if proper output is not found
+    if(!good){
+        return "learn(toReplyTo)";
 }
+}
+
 
 /**
   *Causes the robot to learn from its mistakes.
