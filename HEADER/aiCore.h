@@ -41,9 +41,11 @@ int linec(string file);
 
 /*FUNCTION IMPLEMENTATIONS*/
 //!Not my work
-void replaceAll(std::string& str,  std::string& from,  std::string& to) {
+void replaceAll(std::string& str,  std::string& from,  std::string& to)
+{
     size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+    while((start_pos = str.find(from, start_pos)) != std::string::npos)
+    {
         str.replace(start_pos, from.length(), to);
         start_pos += to.length();
     }
@@ -52,7 +54,8 @@ void replaceAll(std::string& str,  std::string& from,  std::string& to) {
 *Makes the input conform to a certain set of standards.
 *Whitespace is trimmed and it is made lowercase.
 */
-string sanitizeInput(string input){
+string sanitizeInput(string input)
+{
     char letters[input.length()];
     string returnMessage;
 
@@ -73,13 +76,14 @@ string sanitizeInput(string input){
   *@param file - The file path to the target file.
   *@return counter - The number of lines in the file.
   */
-int linec(string file){
+int linec(string file)
+{
     ifstream fileReader(file.c_str());
     string buff;
 
     int counter=0;
 
-    for(counter=0;getline(fileReader,buff);counter++)
+    for(counter=0; getline(fileReader,buff); counter++)
         ;
     return counter;
 }
@@ -90,7 +94,8 @@ int linec(string file){
   *@param file - The path to the leaning file
   *@param wingNum - The chance to guess what the user wants without knowing
   */
-void setupStrings(string &file, int wingNum){
+void setupStrings(string &file, int wingNum)
+{
     ifstream reader(file.c_str());
 
     string whole;
@@ -115,7 +120,8 @@ void setupStrings(string &file, int wingNum){
   *Returns the RAM used by the strings to the memory.
   *The program will be unusable after this until setupStrings() is manually called.
   */
-void clearMemory(){
+void clearMemory()
+{
     delete &input;
     delete &output;
     delete &fileName;
@@ -130,26 +136,30 @@ void clearMemory(){
   *@param toReplyTo - The message to reply to.
   *@return response - The response, "learn(toReplyTo)" if a learning is required.
   */
-string formulateResponse(string toReplyTo){
+string formulateResponse(string toReplyTo)
+{
     bool good=false;//Whether or not the statement was found.
     string buff = sanitizeInput(toReplyTo);
 
     for(unsigned int index=0; index<Gmembers; index++)
     {
-        if(input[index].find(buff)!=-1){
+        if(input[index].find(buff)!=-1)
+        {
             return output[index];//If an exact match is found.
-        good=true;
+            good=true;
         }
 
-        else if((input[index].length()==buff.length())&&(rand()%Gmembers==5)){//Wing
+        else if((input[index].length()==buff.length())&&(rand()%Gmembers==5)) //Wing
+        {
             return output[index];//If the lengths are the same
             good=true;
         }
     }
 //This will only execute if proper output is not found
-    if(!good){
+    if(!good)
+    {
         return "learn(toReplyTo)";
-}
+    }
 }
 
 
@@ -160,11 +170,13 @@ string formulateResponse(string toReplyTo){
   *you are using interactive mode, leave this blank
   *@return learned - Learned is returned to make output better.
   */
-string learn(string toLearn, string learned){
+string learn(string toLearn, string learned)
+{
     fstream inFile;
     inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
 
-    if(learned.length()<=1){//Interactive Mode
+    if(learned.length()<=1) //Interactive Mode
+    {
         cout << "What I should say: ";
         getline(cin,learned);
         cout << endl;

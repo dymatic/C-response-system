@@ -10,7 +10,8 @@ using namespace std;
   *In argument mode, it is run like this: program [path to learn file] [wing modifier]
   *In interactive mode there are no arguments, but it will prompt for input.
   */
-int main(int argc, char**argv){
+int main(int argc, char**argv)
+{
     srand(time(NULL));
     string path;
     string target;
@@ -35,7 +36,7 @@ int main(int argc, char**argv){
     cout << "Enjoy the bot. Type #quit to quit." <<endl;
     setupStrings(path,wing);
     string command;
-    for(;command!="#quit";)
+    for(; command!="#quit";)
     {
         cout << ":~$ ";
         getline(cin,command);
@@ -48,23 +49,24 @@ int main(int argc, char**argv){
             loadCrunchCommand(command);
             executeCrunch();
         }//END crunch if
-        else {
-        setupStrings(path,wing);
-
-        target=formulateResponse(command);
-
-        if(target=="learn(toReplyTo)")
-        {
-            string learnSentence;
-            cout << "I do not know how to reply to "<<command<<", please tell me.\n";
-            cout << "> ";
-            getline(cin,learnSentence);
-            learn(sanitizeInput(command),learnSentence);
-            cout << "Got it. So, " << learnSentence<<endl<<endl;
-        }//END learn
         else
-        cout << target<<endl;
-        target="";
+        {
+            setupStrings(path,wing);
+
+            target=formulateResponse(command);
+
+            if(target=="learn(toReplyTo)")
+            {
+                string learnSentence;
+                cout << "I do not know how to reply to "<<command<<", please tell me.\n";
+                cout << "> ";
+                getline(cin,learnSentence);
+                learn(sanitizeInput(command),learnSentence);
+                cout << "Got it. So, " << learnSentence<<endl<<endl;
+            }//END learn
+            else
+                cout << target<<endl;
+            target="";
         }//END talk
         cout << endl;
     }//END main loop

@@ -18,7 +18,8 @@ string cc;
   */
 bool isCrnchCmd(string ccmd)
 {
-    if(ccmd.length()>1) {
+    if(ccmd.length()>1)
+    {
 
         if(ccmd.find("#")!=-1&&ccmd.find(" ")==-1&&crunchListed(ccmd))
             return true;
@@ -41,8 +42,10 @@ void loadCrunchCommand(string ccmd)
   */
 void executeCrunch()
 {
-    if(cc.length()>0) {
+    if(cc.length()>0)
+    {
         getFun(cc)();
-    } else
+    }
+    else
         getFun("#intro")();
 }
