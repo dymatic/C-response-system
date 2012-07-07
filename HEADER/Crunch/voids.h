@@ -22,13 +22,19 @@ int hello()
     cout << "Hello!"<<endl<<endl;
     return 0;
 }
-
+/**
+*Calls exit(0)
+*/
 int quit()
 {
     exit(0);
     return 1;
 }
 
+/**
+*Outputs a lot of text to the screen
+*based on a control
+*/
 int spew()
 {
     stringstream buffer;

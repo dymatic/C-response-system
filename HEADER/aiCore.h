@@ -87,7 +87,23 @@ int linec(string file)
         ;
     return counter;
 }
-
+/**
+*Finds the number of times a string occurs in a larger string.
+*@param toFindIn - The string to look in
+*@param lookingFor - The string you are looking for
+*/
+int numberOf(string toFindIn, string lookingFor)
+{
+    int counter=0;
+    string buff;
+    while(toFindIn.find(lookingFor)!=-1)
+    {
+        counter++;
+        buff=toFindIn.substr((toFindIn.find(lookingFor)+1),toFindIn.length());
+        toFindIn=buff;
+    }
+    return counter;
+}
 /**
   *Loads a learn file into RAM for use with response formulation.
   *Syntax for the learning file is input_output
@@ -99,19 +115,48 @@ void setupStrings(string &file, int wingNum)
     ifstream reader(file.c_str());
 
     string whole;
-    string part1;
-
-    fileName=file;
+    fileName=file;//Global
+    int globalCounter;//This counts how many IO pairs are found. Since 3.5 this is more than the lines in a file.
 
     for(int index=0; index<linec(file); index++)
     {
         getline(reader,whole);
+        string origWhole = whole;
 
-        input[index] = whole.substr(0,whole.find("_"));
-        output[index]=whole.substr(whole.find("_")+1,whole.length());
+        if(whole.find("$")!=-1)
+        {
+            //$ seperates input with the same output, like hi and hey both wanting the output "Hello".
 
+            string outputAll=whole.substr(whole.find("_")+1,whole.length());
+
+            //hi$hello$sup_Hello user
+            string helperString=whole;
+
+            for(int sindex=0; sindex<numberOf(origWhole,"$"); sindex++)
+            {
+                input[globalCounter]=whole.substr(0,(helperString.find("$")));
+                output[globalCounter]=outputAll;//Splits on $'s, gives same output to all members.
+                helperString=whole.substr(whole.find("$")+1,whole.length());
+                whole=helperString;
+
+                globalCounter++;
+            }//END for
+
+            //COde repeated because above loop leaves one normal output
+            input[globalCounter] = whole.substr(0,whole.find("_"));
+            output[globalCounter]=whole.substr(whole.find("_")+1,whole.length());
+            globalCounter++;
+
+        }
+        else
+        {
+            whole=origWhole;
+            input[globalCounter] = whole.substr(0,whole.find("_"));
+            output[globalCounter]=whole.substr(whole.find("_")+1,whole.length());
+            globalCounter++;
+        }
     }//END for
-    Gmembers=linec(file);
+    Gmembers=globalCounter;
 
     wing=wingNum;
 }
@@ -187,4 +232,5 @@ string learn(string toLearn, string learned)
     setupStrings(fileName,wing);
     return learned;
 }
+
 
