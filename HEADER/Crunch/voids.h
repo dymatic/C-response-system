@@ -23,7 +23,7 @@ int hello()
     return 0;
 }
 /**
-*Calls exit(0)
+*Calls exit
 */
 int quit()
 {
@@ -44,8 +44,8 @@ int spew()
     string numeric = "0123456789";
     string symbols = "`~!@#$%^&*()_+-=,<.>/?; :'\"\\][{}";
 
-    string labels;
-    int intensity;
+    string labels="";
+    int intensity=0;
     cout << "Welcome to the advanced spew interface. Type which pools to spew from."<<endl;
     cout << "0=lowercase, 1=uppercase, 2=Numbers, 3=Symbols. They can be combined like \"024\""<<endl;
 
@@ -58,22 +58,33 @@ int spew()
     cin  >> intensity;
     cout << endl;
 
+    int characters=0;
     for(int index=0; index<intensity; index++)
     {
-        if(labels.find("0")!=-1)
+        if(labels.find("0")!=-1&&characters<intensity)
+        {
             buffer << alphaL.at(rand()%alphaL.length());
+            characters++;
+        }
 
-        if(labels.find("1")!=-1)
+        if(labels.find("1")!=-1&&characters<intensity)
+        {
             buffer << alphaC.at(rand()%alphaC.length());
-
-        if(labels.find("2")!=-1)
+            characters++;
+        }
+        if(labels.find("2")!=-1&&characters<intensity)
+        {
             buffer << numeric.at(rand()%numeric.length());
+            characters++;
+        }
 
-        if(labels.find("3")!=-1)
+        if(labels.find("3")!=-1&&characters<intensity)
+        {
             buffer << symbols.at(rand()%symbols.length());
+            characters++;
+        }
     }
     cout << "SPEW output: "<<buffer.str()<<endl<<endl;
-    return 0;
 }
 
 //BEGIN voidGames port. Undocumented mostly because of old code.

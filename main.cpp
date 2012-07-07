@@ -42,15 +42,17 @@ int main(int argc, char**argv)
         getline(cin,command);
         if(command.length()<1)
             command="hi";
-
+int xx;
         if(isCrnchCmd(command))
         {
             cout << endl;
             loadCrunchCommand(command);
             executeCrunch();
+            xx++;
         }//END crunch if
         else
         {
+        cout << xx<<endl;
             setupStrings(path,wing);
 
             target=formulateResponse(command);
@@ -69,5 +71,6 @@ int main(int argc, char**argv)
             target="";
         }//END talk
         cout << endl;
+        xx++;
     }//END main loop
 }//END main

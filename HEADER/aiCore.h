@@ -116,7 +116,7 @@ void setupStrings(string &file, int wingNum)
 
     string whole;
     fileName=file;//Global
-    int globalCounter;//This counts how many IO pairs are found. Since 3.5 this is more than the lines in a file.
+    int globalCounter=0;//This counts how many IO pairs are found. Since 3.5 this is more than the lines in a file.
 
     for(int index=0; index<linec(file); index++)
     {
