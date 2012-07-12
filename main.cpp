@@ -52,7 +52,6 @@ int xx;
         }//END crunch if
         else
         {
-        cout << xx<<endl;
             setupStrings(path,wing);
 
             target=formulateResponse(command);

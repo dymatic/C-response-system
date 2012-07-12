@@ -18,7 +18,7 @@
 #include "voids.h"
 using namespace std;
 /*Indexing*/
-const int members=14;//The number of plugins
+const int members=15;//The number of plugins
 
 /*Core utility headers*/
 int lsc();
@@ -54,15 +54,15 @@ int intro()
 /////////////////////////////////////////////////////////////////////BEGIN COREUTILS
 /*Arrays*/
 int (*arrPts[members])() = {&hello,&spew,&quit,&intro,&desc,&crnchID,&lsc,&fisc,&isc,&populationGame,&skip,&launch,&throwBall,
-                            &booky
+                            &booky, &terminal
                            };
-string funcNames[members]= {"hello", "spew", "quit","intro", "desc","crnchID","lsc","fisc","isc","popGame","skip","launch","bball","booky"};
+string funcNames[members]= {"hello", "spew", "quit","intro", "desc","crnchID","lsc","fisc","isc","popGame","skip","launch","bball","booky","terminal"};
 
 string docs[members]= {"Outputs \"hello\" to the screen","Generates a password based on a phrase user direction.",
                        "Calls exit(0);.","Guides the user","Gets the documentation for a command", "Gets the Crunch ID for a command",
                        "Lists the crunch commands","Gets the information for all crunch commands","Gets the information of a single crunch command.",
                        "Simulates a city durting a time of disaster.","Simulates a skipping rock","Simultes a fired object","Play a ball game of precision.",
-                       "Distribute your workload"
+                       "Distribute your workload","Runs the system shell, allowing you to execute external commands."
                       };//Stores documentation for each plugin. If an author does not document their work, it will throw the whole system off.
 // If you do not plan on documenting, please leave a space and remember to change members.
 

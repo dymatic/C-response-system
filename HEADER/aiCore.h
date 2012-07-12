@@ -56,9 +56,16 @@ void replaceAll(std::string& str,  std::string& from,  std::string& to)
 */
 string sanitizeInput(string input)
 {
+    string punc[14]={".",","," ",":",";","(",")","*","^","_","-","[","]","?"};
+    string whitespace;
+
     char letters[input.length()];
     string returnMessage;
 
+    for(unsigned int index=0; index<14; index++)
+    {
+        replaceAll(input,punc[index],whitespace);
+    }
     for(unsigned int index=0; index<input.length(); index++)
         letters[index]=input.at(index);
 
@@ -68,6 +75,7 @@ string sanitizeInput(string input)
 
     for(unsigned int index=0; index<input.length(); index++)
         returnMessage+=letters[index];
+
     return returnMessage;
 }
 /**
@@ -104,6 +112,40 @@ int numberOf(string toFindIn, string lookingFor)
     }
     return counter;
 }
+
+/**
+*Splitstr is a very important function.
+*This finds text in between two magic characters and removes it from the string.
+*
+*The translator works on an explicit basis. Every string meeting its criteria will be
+*removed. This allows sensitive strings to leave before translation begins. You must place
+*the sensitive string in between the two magic characters.
+*Splitstr also works on langdefines files.
+*@param toSplit   - The string to remove sensitive strings from.
+*@param magicahar - The character used in the code file to denote a sensitive string. "$" is the standard.
+*/
+void splitstr(string &toSplit, string magichar)
+{
+    if(toSplit.find(magichar)!=-1)
+    {
+        stringstream buffer;
+
+        string copy=toSplit;
+        string nope="";//replaceall needs a reference.
+
+        if(toSplit.find(magichar)!=-1)//Put the text before first magichar in buffer
+            buffer<<copy.substr(0,toSplit.find(magichar));
+
+        if(copy.find(magichar)!=-1)//Make copy equal to the whole string minues the part up to the first magichar
+            copy=copy.substr(toSplit.find(magichar)+1,toSplit.length());
+
+        if(copy.find(magichar)!=-1)//Put the position of the magichar+1 in the buffer.
+            buffer<<copy.substr(copy.find(magichar)+1,copy.length());
+
+        toSplit=buffer.str();
+    }//End if
+}
+
 /**
   *Loads a learn file into RAM for use with response formulation.
   *Syntax for the learning file is input_output
@@ -117,11 +159,24 @@ void setupStrings(string &file, int wingNum)
     string whole;
     fileName=file;//Global
     int globalCounter=0;//This counts how many IO pairs are found. Since 3.5 this is more than the lines in a file.
+    bool replaceIt;
 
     for(int index=0; index<linec(file); index++)
     {
+        replaceIt=true;
+
         getline(reader,whole);
         string origWhole = whole;
+
+        if(whole.find("~")!=-1&&numberOf(whole,"~")%2==0)
+        {
+        for(int tindex=0; tindex<numberOf(whole,"~")/2; tindex++)
+        {
+            splitstr(whole,"~");//Splits on ~, the comment character.
+            replaceIt=false;
+        }
+
+        }
 
         if(whole.find("$")!=-1)
         {
@@ -150,7 +205,9 @@ void setupStrings(string &file, int wingNum)
         }
         else
         {
-            whole=origWhole;
+            if(replaceIt)
+                whole=origWhole;
+
             input[globalCounter] = whole.substr(0,whole.find("_"));
             output[globalCounter]=whole.substr(whole.find("_")+1,whole.length());
             globalCounter++;

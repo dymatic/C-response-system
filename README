@@ -41,5 +41,5 @@ WING - 1.6.1: Fixed a serious issue in the second WING response.
 WING - Semantic(1.6-2.0): Undocumented update. Tested some lexical stuff.
 
 nAI - (3.0): Complete rewrite of WING.
-nAI - (3.5): Why the big jump in the version number? I added a lot to aiCore.h. Now people can wire the learning file themselves.
+nAI - (3.5): Why the big jump in the version number? I added a lot to aiCore.h. Now people can wire the learning file themselves with comments and multichars.
 

@@ -364,3 +364,44 @@ int booky()
     cout << "You must read "<<((total-on)/days)<<" pages every day to complete the book on time."<<endl<<endl;
     return 0;
 }
+
+/**
+*Runs a terminal application within a command-line application. Oh the fun.
+*There are special commands associated with the terminal. "Quit", "Exit", and "Set" are
+*the only valid ones. Quit quits the program, Exit exits the terminal. Set takes an argument
+*that begins the prompt, which is % by default for zsh lovers.
+*/
+int terminal(){
+    string cmd;
+    string prompt="> ";
+    cout << "Enjoy your shell. Type Quit to exit the program,"
+         << " Exit to close the terminal, and Set<promptgoeshere> to set the prompt."<<endl;
+    do{
+            cout << prompt;
+            getline(cin, cmd);
+            cout << endl;
+
+            /*Start searching for special cmd*/
+            if(cmd=="Quit")
+                exit(0);
+
+            else if(cmd=="Exit")
+                return 0;
+
+            else if(cmd.find("Set")!=-1)
+            {
+                string helperStr = cmd;
+                string p1=cmd.substr((helperStr.find("<")+1),(helperStr.find(">")-2));
+                prompt=p1.substr(0,p1.length()-1);
+                continue;
+            }
+
+            else {//Shell command
+                 system(cmd.c_str());
+                 system(" ");//Extremely shoddy, yet functional.
+                 }
+                 cout << endl;
+    }while(cmd!="Quit");//END body loop
+    cout << endl << endl;
+    return 0;
+}
