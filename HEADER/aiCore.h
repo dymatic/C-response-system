@@ -197,7 +197,7 @@ void setupStrings(string &file, int wingNum)
                 globalCounter++;
             }//END for
 
-            //COde repeated because above loop leaves one normal output
+            //Code repeated because above loop leaves one normal output
             input[globalCounter] = whole.substr(0,whole.find("_"));
             output[globalCounter]=whole.substr(whole.find("_")+1,whole.length());
             globalCounter++;
@@ -251,7 +251,7 @@ string formulateResponse(string toReplyTo)
             good=true;
         }
 
-        else if((input[index].length()==buff.length())&&(rand()%Gmembers==5)) //Wing
+        else if((input[index].length()==buff.length())&&(rand()%wing==5)) //Wing
         {
             return output[index];//If the lengths are the same
             good=true;
@@ -289,5 +289,28 @@ string learn(string toLearn, string learned)
     setupStrings(fileName,wing);
     return learned;
 }
+/**
+*Causes explicit learning. This should be triggerd with a is_a statement.
+*For instance, that elephant IS fat. What is that elephant? fat.
+*@param toParse - The string to learn from
+*///Will be implemented in Semantic 4.0 with a feature to say "X is Y".
+void exlLearn(string toParse){
+fstream inFile;//The learn file, assigned using globals
+inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
 
+string token;//Subject
+stringstream toWrite;
+string toSOn;
 
+if(toParse.find(" is ")!=-1)
+{
+toSOn=" is ";
+}else if(toParse.find(" are ")){
+toSOn=" are ";
+}
+token=toParse.substr(0, toParse.find(toSOn));
+
+toWrite << "what"<<toSOn<<token;
+
+inFile << toWrite.str()<<"$"<<token<<"_"<<toParse<<endl<<toParse<<"_"<<toWrite.str();
+}

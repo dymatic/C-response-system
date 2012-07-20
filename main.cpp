@@ -12,11 +12,19 @@ using namespace std;
   */
 int main(int argc, char**argv)
 {
-    srand(time(NULL));
-    string path;
-    string target;
+    srand(time(NULL));//Seed random for voids.h and WING
 
-    int wing;
+    /*Objects*/
+    string path;//File Path
+    string target;//Output
+
+    /*Primitives*/
+    int wing;//Chance to wing it.
+
+    /*Constants*/
+    const bool wantLearn=true;//Whether or not the bot should strive to learn(DEFAULT: TRUE)
+    const bool allowCrunch=true;//Whether or not to allow executing plugins. (DEFAULT: TRUE)
+    const char* noCrunchMsg="Permission Denied.";
     if(argc<2)//START interactive
     {
         cout << "Path to learn file: ";
@@ -27,49 +35,67 @@ int main(int argc, char**argv)
         cin  >> wing;
         cout << endl;
     }//END interactive
-    else
+
+    else//Not interactive
     {
         path=argv[1];
         wing=atoi(argv[2]);
 
-    }//END arg
-    cout << "Enjoy the bot. Type #quit to quit." <<endl;
+    }//END interactive mode
+
+    cout << "Enjoy the bot. Type #quit to quit, #intro for crunch" <<endl;
     setupStrings(path,wing);
-    string command;
-    for(; command!="#quit";)
+    string command;//Anything, crunch or voice.
+
+    for(; command!="#quit";)//Endless loop until #quit is called
     {
         cout << ":~$ ";
         getline(cin,command);
         if(command.length()<1)
             command="hi";
-int xx;
+
         if(isCrnchCmd(command))
         {
             cout << endl;
-            loadCrunchCommand(command);
-            executeCrunch();
-            xx++;
+
+            if(allowCrunch)
+            {
+                loadCrunchCommand(command);
+                executeCrunch();
+            }//END allowed
+
+            else
+            {
+                cout << noCrunchMsg << endl;
+            }//END not allowed
+
         }//END crunch if
-        else
+
+        else//NOT crunch query
         {
             setupStrings(path,wing);
 
             target=formulateResponse(command);
 
-            if(target=="learn(toReplyTo)")
+            if(target=="learn(toReplyTo)"&&wantLearn)//Arrays not loaded right, WING not gotten, or new input
             {
-                string learnSentence;
+                string learnSentence;//Response to self
+
                 cout << "I do not know how to reply to "<<command<<", please tell me.\n";
                 cout << "> ";
+
                 getline(cin,learnSentence);
-                learn(sanitizeInput(command),learnSentence);
+                learn(sanitizeInput(command),learnSentence);//Will try twice if blank is given
+
                 cout << "Got it. So, " << learnSentence<<endl<<endl;
             }//END learn
-            else
+
+            else if(target!="learn(toReplyTo)") //Input found, or WING gotten
+            {
                 cout << target<<endl;
-            target="";
-        }//END talk
-        cout << endl;
-        xx++;
-    }//END main loop
-}//END main
+                target="";
+            }//END talk
+            cout << endl;
+         }//END true talk
+        }//END main loop
+    }//END main

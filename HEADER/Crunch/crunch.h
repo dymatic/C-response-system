@@ -9,7 +9,7 @@ using namespace std;
   */
 
 /*Variables*/
-string cc;
+string cc;//The crunch command.
 
 /**
   *Determines whether or not a command is a crunch command.
@@ -21,10 +21,10 @@ bool isCrnchCmd(string ccmd)
     if(ccmd.length()>1)
     {
 
-        if(ccmd.find("#")!=-1&&ccmd.find(" ")==-1&&crunchListed(ccmd))
+        if(ccmd.find("#")!=-1&&ccmd.find(" ")==-1&&crunchListed(ccmd))//Cannot have space, must be listed
             return true;
     }//END body if
-    return false;
+    return false;//The text was NOT a crunch command
 }
 
 /**
@@ -44,8 +44,8 @@ void executeCrunch()
 {
     if(cc.length()>0)
     {
-        getFun(cc)();
+        getFun(cc)();//Executes the crunch command with the name of cc.
     }
     else
-        getFun("#intro")();
+        getFun("#intro")();//Help function
 }
