@@ -15,7 +15,7 @@ using namespace std;
 /*STATS*/
 int Gmembers;
 int wing;//Chance to guess
-
+int globalCounter;//Position in arrays
 /*STRINGS*/
 string fileName;//Path to learn file
 
@@ -46,7 +46,7 @@ string sanitizeInput(string input)
     string punc[14]= {".",","," ",":",";","(",")","*","^","_","-","[","]","?"};//To remove
     string whitespace;//
 
-    char letters[input.length()];
+
     string returnMessage;
 
     for(unsigned int index=0; index<14; index++)//Removes punctuation
@@ -129,12 +129,35 @@ void splitstr(string &toSplit, string magichar)
             copy=copy.substr(toSplit.find(magichar)+1,toSplit.length());
 
         if(copy.find(magichar)!=-1)//Put the position of the magichar+1 in the buffer.
-            buffer<<copy;
+            buffer<<copy.substr(copy.find("~")+1,copy.length());
 
         toSplit=buffer.str();
     }//End if
 }
+/**
+*Adds a string to the arrays.
+*@param string - The string in in_out syntax.
+*/
+void addStr(string msg)
+{
+    input[globalCounter]=msg.substr(0,msg.find("_"));
+    output[globalCounter]=msg.substr(msg.find("_")+1,msg.length());
 
+    globalCounter++;
+}
+
+/**
+*Adds the two strings to the two IO arrays.
+*@param in - The string to add to the input
+*@param out - The string to add to the output arrays.
+*/
+void addStr(string in, string out)
+{
+    input[globalCounter] = in;
+    output[globalCounter] = out;
+
+    globalCounter++;
+}
 /**
   *Loads a learn file into RAM for use with response formulation.
   *Syntax for the learning file is input_output
@@ -152,7 +175,7 @@ void setupStrings(string &file, int wingNum)
     string helperString;//A copy of whole used for multiple inputs
 
     /*Primitives*/
-    int globalCounter=0;//Number of *_outputs to write to ARRAYS (not in file)
+    globalCounter=0;//Number of *_outputs to write to ARRAYS (not in file)
     bool replaceIt;    // Replaces whole if it got corrupted
 
     /*Intializations*/
@@ -207,24 +230,14 @@ void setupStrings(string &file, int wingNum)
             }//END for
 
             //Code repeated because above loop leaves one normal output
-            input[globalCounter] = whole.substr(0,whole.find("_"));
-
-            output[globalCounter]=whole.substr(whole.find("_")+1,whole.length());
-
-            globalCounter++;
-
+            addStr(whole);
         }//END mult IF
 
         else
         {
             if(replaceIt)//No comments, no multiple inputs
                 whole=origWhole;
-
-            input[globalCounter] = whole.substr(0,whole.find("_"));
-
-            output[globalCounter]=whole.substr(whole.find("_")+1,whole.length());
-
-            globalCounter++;
+            addStr(whole);
         }
     }//END for
     Gmembers=globalCounter;
@@ -243,6 +256,36 @@ void clearMemory()
     delete &fileName;
     delete &Gmembers;
 }
+/**
+*Causes explicit learning. This should be triggerd with a is_a statement.
+*For instance, that elephant IS fat. What is that elephant? fat.
+*@param toParse - The string to learn from
+*///Will be implemented in Semantic 4.0 with a feature to say "X is Y".
+void exlLearn(string toParse)
+{
+    fstream inFile;//The learn file, assigned using globals
+    inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
+
+    inFile << endl;
+    string token;//Subject
+    stringstream toWrite;
+    string toSOn;
+
+    if(toParse.find(" is ")!=-1)
+    {
+        toSOn=" is ";
+    }
+    else if(toParse.find(" are ")!=-1)
+    {
+        toSOn=" are ";
+    }
+
+    token=toParse.substr(0, toParse.find(toSOn));
+
+    toWrite << "what"<<toSOn<<token;
+
+    inFile << toWrite.str()<<"$"<<token<<"_"<<toParse;
+}
 
 /**
   *Uses the loaded strings to formulate a response.
@@ -251,13 +294,14 @@ void clearMemory()
   *that forces a learn to take place.
   *@param toReplyTo - The message to reply to.
   *@return response - The response, "learn(toReplyTo)" if a learning is required. The
-  *                  thought process here is that main can handle it (makes function portable)
+  *                  thought process here is that main can handle it (makes function portable).
+  *                  Since version 4.0, this function can return "exlLearned" if it has been
+  *                  explicitly taught.
   */
 string formulateResponse(string toReplyTo)
 {
     /*Primitives*/
     bool good=false;//Whether or not the statement was found.
-
     /*Objects*/
     string buff;//Santized toReplyTo
 
@@ -266,7 +310,7 @@ string formulateResponse(string toReplyTo)
 
     for(unsigned int index=0; index<Gmembers; index++)
     {
-        if(buff.find(input[index])!=-1)//Exact match (input file INSIDE buff)
+        if(buff.find(input[index])!=-1&&input[index].length()>1)//Exact match (input file INSIDE buff)
         {
             return output[index];
             good=true;
@@ -277,6 +321,11 @@ string formulateResponse(string toReplyTo)
             return output[index];//If the lengths are the same
             good=true;
         }
+    }
+
+    if(toReplyTo.find("is")!=-1||toReplyTo.find("are")!=-1){
+        exlLearn(toReplyTo);
+        return "exlLearned";
     }
 //This will only execute if proper output is not found
     if(!good)
@@ -313,32 +362,7 @@ string learn(string toLearn, string learned)
     inFile<<endl<<toLearn<<"_"<<learned;//Writes in prompt_result syntax
     inFile.close();
 
-    setupStrings(fileName,wing);//The program, by default, makes use of the learned phrase right away
+    addStr(toLearn,learned);//The program, by default, makes use of the learned phrase right away
 
     return learned;
-}
-/**
-*Causes explicit learning. This should be triggerd with a is_a statement.
-*For instance, that elephant IS fat. What is that elephant? fat.
-*@param toParse - The string to learn from
-*///Will be implemented in Semantic 4.0 with a feature to say "X is Y".
-void exlLearn(string toParse){
-fstream inFile;//The learn file, assigned using globals
-inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
-
-string token;//Subject
-stringstream toWrite;
-string toSOn;
-
-if(toParse.find(" is ")!=-1)
-{
-toSOn=" is ";
-}else if(toParse.find(" are ")){
-toSOn=" are ";
-}
-token=toParse.substr(0, toParse.find(toSOn));
-
-toWrite << "what"<<toSOn<<token;
-
-inFile << toWrite.str()<<"$"<<token<<"_"<<toParse<<endl<<toParse<<"_"<<toWrite.str();
 }

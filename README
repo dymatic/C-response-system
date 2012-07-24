@@ -1,22 +1,31 @@
 INTRODUCTION
 
-This is an AI program with a medium level of intelligence. At this point, you must explicitly teach it everything. In this new version, the WING update, it has a user-defined chance to guess what you wanted to tell it and respond. The program has a special feature called Crunch Commands that allow you to do a whole heap of things, from math to simulations.
+This is an AI program with a medium level of intelligence. At this point, you must explicitly teach it everything. In this new version, the WING update, it has a user-defined
+chance to guess what you wanted to tell it and respond. The program has a special feature called Crunch Commands that allow you to do a whole heap of things,
+from math to simulations to even executing shell commands. The latest version, nai, makes it more enjoyable to program by hand and to use in project such as IRC bots.
 
 INSTALLATION
-The Debian package is the best way of installing this software. There are other ways, though. The executable is ready to roll; all you need to do is invoke it from the command line.You have to make sure that it is in its own directory so that Input.txt and Output.txt do not clutter up the directory where you extract it. You can also compile the source to create an executable, but that would create extra work for minimal gain.
+The Debian package is the best way of installing this software. There are other ways, though. The executable is ready to roll; all you need to do is invoke it from the command line.
+You can also compile the source to create an executable, but that would create extra work for minimal gain.
 
 LICENSE
-This newest version of nAI is licensed under the GNU General Public License
+This newest version of nAI is licensed under the GNU General Public License where before it was licensed under my custom Noran Restricted Public License v2.0, but there were too many
+legal gaps.
 
 NAMING
-Mature version numbers will bring a tier identifier, a codename for that particular version. The name is based on a major feature at that revision. For example, WING was the name given to all versions of AI 1, since I added a WING feature to Engine.h in that version.
+Mature version numbers will bring a tier identifier; a codename for that particular version.
+The name is based on a major feature at that revision. For example, WING was the name given to all versions of AI 1, since I added a WING feature to Engine.h in that version.
+
+nai will always be the name of the executable despite the earlier name "Wing" and the next version being called "mantic".
 
 VERSION
-nAI - 3.5: Added functionallity to the learn file. Now it's fun to program yourself!
+mantic - 4.0: Added true learning capabilities and a bunch of settings, in addition to making it 200 times more efficient than before.
 
 FUTURE PLANS
-EVEN more stuff coming to the learn file in 3.6. 3.5 was just a small preview. I will be re-adding comments with SCT's splistr() implementation.
-Also, since the program is designed to be "smart", I am going to add something that detects multiple output and groups it together itself.
+In future versions of semantic: Add function cleanFile() so the learn file can optimize itself for size. I will also make this GNU-standards compliant. I also want to add 
+the "am" keyword to the semantic parsing as well as adding a bunch more options and
+possibly a configuration file. 4.0 will be the biggest age of development for nai
+yet.
 
 MAP
 This software comes with a lot of files. Here is a list of what each do.
@@ -36,11 +45,11 @@ WING - 1.1: Updated the "wing" feature to be more accurate, added a default inpu
 WING - 1.2: Updated the "wing" feature again and fixed gravebang issues.
 WING - 1.5: Removed all gotos and added an interface to LibMath.h
 WING - 1.5.1: Added a new kind of sentence to rand, documentation, and formatted.
-WING - 1.6: Added another type of WING response and fixed 
+WING - 1.6: Added another type of WING response and fixed
 WING - 1.6.1: Fixed a serious issue in the second WING response.
 WING - Semantic(1.6-2.0): Undocumented update. Tested some lexical stuff.
 
 nAI - (3.0): Complete rewrite of WING.
 nAI - (3.5): Why the big jump in the version number? I added a lot to aiCore.h. Now people can wire the learning file themselves with comments and multichars.
 
-smtc - (4.0): Added semantic parsing
+mantic - (4.0): Added semantic parses, made more efficient.

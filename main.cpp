@@ -25,6 +25,8 @@ int main(int argc, char**argv)
     const bool wantLearn=true;//Whether or not the bot should strive to learn(DEFAULT: TRUE)
     const bool allowCrunch=true;//Whether or not to allow executing plugins. (DEFAULT: TRUE)
     const char* noCrunchMsg="Permission Denied.";
+    const char* understood ="Understood";//After exlLearned
+
     if(argc<2)//START interactive
     {
         cout << "Path to learn file: ";
@@ -90,10 +92,14 @@ int main(int argc, char**argv)
                 cout << "Got it. So, " << learnSentence<<endl<<endl;
             }//END learn
 
+            else if(target=="exlLearned")
+            {
+            target="Understood.";
+            }
             else if(target!="learn(toReplyTo)") //Input found, or WING gotten
             {
                 cout << target<<endl;
-                target="";
+                target=understood;
             }//END talk
             cout << endl;
          }//END true talk

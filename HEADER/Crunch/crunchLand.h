@@ -160,6 +160,9 @@ int desc()
         cout << docs[atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str())];//Gets the docs at <index>
     else   //BEGIN name search
     {
+        if(helper.find("#")==-1)
+        helper=helper.substr(0, helper.length());
+
         for(int index=0; index<members; index++)
             if(funcNames[index]==helper)
             {
@@ -210,16 +213,21 @@ int isc()
     else   //BEGIN name search
     {
 
-        for(int index=0; index<members; index++)
+    if(helper.find("#")==-1)
+        helper=helper.substr(0, helper.length());
 
-            if(funcNames[index]==helper)
+        for(int index=0; index<members; index++)
             {
-                cout << "Name: "<<funcNames[index]<<endl;
-                cout << "ID: "  <<index<<endl;
-                cout << "Desc: "<<docs[index]<<endl<<endl;
-                break;
+                if(funcNames[index]==helper)
+                {
+                    cout << "Name: "<<funcNames[index]<<endl;
+                    cout << "ID: "  <<index<<endl;
+                    cout << "Desc: "<<docs[index]<<endl<<endl;
+                    break;
+                }
             }
     }//END name search
+    return 0;
 }
 /**
   *Returns the function matching the specified name.
