@@ -324,7 +324,6 @@ string formulateResponse(string toReplyTo)
     }
 
     if(toReplyTo.find("is")!=-1||toReplyTo.find("are")!=-1){
-        exlLearn(toReplyTo);
         return "exlLearned";
     }
 //This will only execute if proper output is not found

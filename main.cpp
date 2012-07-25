@@ -24,6 +24,10 @@ int main(int argc, char**argv)
     /*Constants*/
     const bool wantLearn=true;//Whether or not the bot should strive to learn(DEFAULT: TRUE)
     const bool allowCrunch=true;//Whether or not to allow executing plugins. (DEFAULT: TRUE)
+    const bool allowExpllearn=true;//Whether or not to allow explicit non-confrontational learning (DEFAULT: TRUE)
+
+    string prompt     = "~$ ";
+
     const char* noCrunchMsg="Permission Denied.";
     const char* understood ="Understood";//After exlLearned
 
@@ -51,11 +55,17 @@ int main(int argc, char**argv)
 
     for(; command!="#quit";)//Endless loop until #quit is called
     {
-        cout << ":~$ ";
+        cout << prompt<<" ";
         getline(cin,command);
         if(command.length()<1)
             command="hi";
 
+        if(command.find("Set")!=-1)//Can set the prompte
+        {
+                string p1=command.substr((command.find("<")+1),(command.find(">")-2));
+                prompt=p1.substr(0,p1.length()-1);
+                continue;
+        }
         if(isCrnchCmd(command))
         {
             cout << endl;
@@ -92,10 +102,12 @@ int main(int argc, char**argv)
                 cout << "Got it. So, " << learnSentence<<endl<<endl;
             }//END learn
 
-            else if(target=="exlLearned")
+            else if(target=="exlLearned"&&allowExpllearn)
             {
+            exlLearn(command);
             target="Understood.";
             }
+
             else if(target!="learn(toReplyTo)") //Input found, or WING gotten
             {
                 cout << target<<endl;
