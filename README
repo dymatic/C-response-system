@@ -19,10 +19,10 @@ The name is based on a major feature at that revision. For example, WING was the
 nai will always be the name of the executable despite the earlier name "Wing" and the next version being called "mantic".
 
 VERSION
-mantic - 4.0: Added true learning capabilities and a bunch of settings, in addition to making it 200 times more efficient than before.
+mantic - 4.2: Added GNU-like options like --help and --version.
 
 FUTURE PLANS
-In future versions of semantic: Add function cleanFile() so the learn file can optimize itself for size. I will also make this GNU-standards compliant. I also want to add 
+In future versions of semantic: Add function cleanFile() so the learn file can optimize itself for size. I also want to add 
 the "am" keyword to the semantic parsing as well as adding a bunch more options and
 possibly a configuration file. 4.0 will be the biggest age of development for nai
 yet.
@@ -36,8 +36,9 @@ bin/Release/nai - Executable file
 HEADER/aiCore.h - Utilities relating directly to the talking and learning part of the program.
 HEADER/Crunch/crunch.h - Top-level abstractions for crunchLand
 HEADER/Crunch/crunchLand.h - Lowest level. Returns the functions relating to crunches.
-HEADER/Crunch/voids.h - No-mans-land, basically. Holds big things for crunchLand.
+HEADER/Crunch/voids.h - No-mans-land, basically. Holds big things for crunchLand and GNU commands.
 
+DEBIAN/* - Used for created the Debian file.
 
 CHANGELOG
 WING - 1: Added the "wing" feature, where the program will try to guess what you wanted to tell it.
@@ -53,3 +54,4 @@ nAI - (3.0): Complete rewrite of WING.
 nAI - (3.5): Why the big jump in the version number? I added a lot to aiCore.h. Now people can wire the learning file themselves with comments and multichars.
 
 mantic - (4.0): Added semantic parses, made more efficient.
+mantic - (4.2): Added GNU-Like information commands

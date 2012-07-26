@@ -160,7 +160,7 @@ int desc()
         cout << docs[atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str())];//Gets the docs at <index>
     else   //BEGIN name search
     {
-        if(helper.find("#")==-1)
+        if(helper.find("#")!=-1)
         helper=helper.substr(0, helper.length());
 
         for(int index=0; index<members; index++)

@@ -12,7 +12,7 @@
 */
 #include <iostream>
 #include <cstdlib>
-
+const char* version="4.2";
 using namespace std;
 /**
 *The cookie-cutter crunch plugin.
@@ -404,4 +404,17 @@ int terminal(){
     }while(cmd!="Quit");//END body loop
     cout << endl << endl;
     return 0;
+}
+
+//BEGIN gnus
+void versionGet(){
+cout << version << endl;
+}
+
+void helpGet(){
+cout << "Welcome to nAI version "<<version<<"."<<endl
+     << "To get started all you need to do is start talking to the bot." <<endl
+     << "The bot will build its own learn file from talking, but you can"<<endl
+     << "set one up yourself. The syntax is documented on the nAI wiki." <<endl
+     << "#intro will get you started with Crunch commands."              <<endl;
 }
