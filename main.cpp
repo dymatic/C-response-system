@@ -19,12 +19,18 @@ string gnuPrompts[gnus][3]= {{"--version","-v", "yes"},{"-h", "--help", "yes"}};
 */
 bool handleArgs(int argc, char**argv) {
     for(int index=1; index<argc; index++) {
-
+/*
+*LOOP OUTLINE
+*Iterate through arguments
+*Iterate through commands, comparing them to argument
+*Execute command if it is found, go to next argument otherwise
+*Exit if that is specified
+*Return false if nothing was done
+*/
         for(int gnuCommands=0; gnuCommands<gnus; gnuCommands++) {
 
-            if(string(argv[index])==gnuPrompts[gnuCommands][0]||string(argv[index])==gnuPrompts[gnuCommands][1]) {
-                cout << argv[index]<<" was equal to "<<gnuPrompts[gnuCommands][0]<< " or "<<gnuPrompts[gnuCommands][1]<<endl;
-                gnuFun[gnuCommands]();
+            if(string(argv[index])==gnuPrompts[gnuCommands][0]||string(argv[index])==gnuPrompts[gnuCommands][1]) {//If the --command or -c is found
+                gnuFun[gnuCommands]();//Executes the command that matches the name
 
                 if(gnuPrompts[gnuCommands][2]=="yes") {
                     exit(0);
@@ -32,6 +38,7 @@ bool handleArgs(int argc, char**argv) {
             }//END found if
         }//END command search
     }//END arg list
+    return false;
 }//END function
 /**
   *Main runs in two different ways: argument and interactive modes.
