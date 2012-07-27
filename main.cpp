@@ -137,6 +137,8 @@ int main(int argc, char**argv) {
                 target=understood;
             }//END talk
             cout << endl;
+
+            usleep(1000);
         }//END true talk
     }//END main loop
 }//END main

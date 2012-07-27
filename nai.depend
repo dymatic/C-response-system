@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1343330604 source:/home/nate/Code::Blocks/Grade Calculator/nai/main.cpp
+1343356089 source:/home/nate/Code::Blocks/Grade Calculator/nai/main.cpp
 	<iostream>
 	<cstdlib>
 	<time.h>
@@ -23,7 +23,7 @@
 	<iostream>
 	<cstdlib>
 
-1343312909 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/aiCore.h
+1343363055 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/aiCore.h
 	<iostream>
 	<fstream>
 	<sstream>

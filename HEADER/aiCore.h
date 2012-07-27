@@ -26,11 +26,9 @@ string output[10000];
 
 /*FUNCTION IMPLEMENTATIONS*/
 //!Not my work
-void replaceAll(std::string& str,  std::string& from,  std::string& to)
-{
+void replaceAll(std::string& str,  std::string& from,  std::string& to) {
     size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != std::string::npos)
-    {
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
         str.replace(start_pos, from.length(), to);
         start_pos += to.length();
     }
@@ -41,8 +39,7 @@ void replaceAll(std::string& str,  std::string& from,  std::string& to)
 *@param input - The string to sanitize.
 *@return rMsg - The sanitized message
 */
-string sanitizeInput(string input)
-{
+string sanitizeInput(string input) {
     string punc[14]= {".",","," ",":",";","(",")","*","^","_","-","[","]","?"};//To remove
     string whitespace;//
 
@@ -63,8 +60,7 @@ string sanitizeInput(string input)
   *@param file - The file path to the target file.
   *@return counter - The number of lines in the file.
   */
-int linec(string file)
-{
+int linec(string file) {
     /*Objects*/
     ifstream fileReader(file.c_str());
     string buff;
@@ -80,8 +76,7 @@ int linec(string file)
 *@param toFindIn - The string to look in
 *@param lookingFor - The string you are looking for
 */
-int numberOf(string toFindIn, string lookingFor)
-{
+int numberOf(string toFindIn, string lookingFor) {
     /*Primitives*/
     int counter;
 
@@ -91,8 +86,7 @@ int numberOf(string toFindIn, string lookingFor)
     /*Initializations*/
     counter=0;
 
-    while(toFindIn.find(lookingFor)!=-1)
-    {
+    while(toFindIn.find(lookingFor)!=-1) {
         counter++;
 
         buff=toFindIn.substr((toFindIn.find(lookingFor)+1),toFindIn.length());//Bumps past character
@@ -109,10 +103,8 @@ int numberOf(string toFindIn, string lookingFor)
 *@param toSplit   - The string to remove sensitive strings from.
 *@param magicahar - The character used in the code file to denote a sensitive string. "$" is the standard.
 */
-void splitstr(string &toSplit, string magichar)
-{
-    if(toSplit.find(magichar)!=-1)
-    {
+void splitstr(string &toSplit, string magichar) {
+    if(toSplit.find(magichar)!=-1) {
         /*Objects*/
         stringstream buffer;
 
@@ -138,8 +130,7 @@ void splitstr(string &toSplit, string magichar)
 *Adds a string to the arrays.
 *@param string - The string in in_out syntax.
 */
-void addStr(string msg)
-{
+void addStr(string msg) {
     input[globalCounter]=msg.substr(0,msg.find("_"));
     output[globalCounter]=msg.substr(msg.find("_")+1,msg.length());
 
@@ -151,12 +142,58 @@ void addStr(string msg)
 *@param in - The string to add to the input
 *@param out - The string to add to the output arrays.
 */
-void addStr(string in, string out)
-{
+void addStr(string in, string out) {
     input[globalCounter] = in;
     output[globalCounter] = out;
 
     globalCounter++;
+}
+
+/**
+*Adds an array of inputs with the same output to the arrays.
+*@param *in - The pointer of arrays to add
+*@param out - The output
+*@param argInput - The number of inputs to write
+*/
+void addStrArr(string in[], string out, int argInput) {
+    for(int index=0; index<argInput; index++) {
+        input[globalCounter]=in[index];
+        output[globalCounter]=out;
+        globalCounter++;
+    }
+}
+
+/**
+*Splits a string on a given character, returning an array equal to the split string.
+*@param message - The string to split from
+*@param delim - What to split on
+*@param argc - The number of strings to have in the array
+*@return *strings - The array containing the strings
+*//*
+string** splitOn(string message, char *delim) {
+    string *rString[numberOf(message, string(delim))+1];
+
+    for(int index=0; index<numberOf(message, string(delim)); index++) {
+        *rString[index]=message.substr(0, message.find(delim));
+
+        message = message.substr(message.find(delim)+1, message.length());//Coming soon to a repo near you!
+    }
+    *rString[numberOf(message, string(delim))] = message;
+
+    return rString;
+}*/
+/**
+*Removes a comment in between ~~s.
+*@param comment - The reference to the string containing a comment
+*@param delim   - The deliminator (~ is default)
+*/
+void rmComment(string &comment, char *delim) {
+    if(comment.find(delim)!=-1&&numberOf(comment,delim)%2==0) { //Delims have to be even ex: ~remove me~
+        for(int index=0; index<numberOf(comment,delim)/2; index++) { // /2 because splitstr() removes both.
+            splitstr(comment,delim);
+        }
+
+    }
 }
 /**
   *Loads a learn file into RAM for use with response formulation.
@@ -164,81 +201,47 @@ void addStr(string in, string out)
   *@param file - The path to the leaning file
   *@param wingNum - The chance to guess what the user wants without knowing
   */
-void setupStrings(string &file, int wingNum)
-{
+void setupStrings(string &file, int wingNum) {
     /*Objects*/
     ifstream reader(file.c_str());//Learn file
 
     string whole;//An entire line from the learn file. Overwritten frequently/
-    string origWhole;//A copy of whole for replacing
-    string outputAll;//Output for multiple inputs
-    string helperString;//A copy of whole used for multiple inputs
 
     /*Primitives*/
     globalCounter=0;//Number of *_outputs to write to ARRAYS (not in file)
-    bool replaceIt;    // Replaces whole if it got corrupted
 
     /*Intializations*/
     fileName=file;//Global learn file path
 
-    for(int index=0; index<linec(file); index++)
-    {
+    for(int index=0; index<linec(file); index++) {
         /*This loop does:
-         0 Gets line, makes backup
+         0 Gets line
          1 Strips comments
          2 Writes multiple inputs to one output
          3 Writes to the learn file
-         4 Replaces whole if need be
-         5 Sets filename and wing global variables*/
-
-        replaceIt=true;
+         4 Sets filename and wing global variables*/
 
         getline(reader,whole);
-        origWhole = whole;
 
-        if(whole.find("~")!=-1&&numberOf(whole,"~")%2==0)//Strips comments
-        {
-            for(int tindex=0; tindex<numberOf(whole,"~")/2; tindex++)
-            {
-                splitstr(whole,"~");
-                replaceIt=false;
-            }
-
-        }
-
-        if(whole.find("$")!=-1)
-        {
+        rmComment(whole, "~");
+        int tokens=numberOf(whole,"$");
+        if(whole.find("$")!=-1) {
             /*$ seperates input that warrant the same output,
               like "hi" and "hey" both returning "Hello".*/
 
-            outputAll=whole.substr(whole.find("_")+1,whole.length());
+            string arr[numberOf(whole, "$")];//Array of Inputs
 
-            //hi$hello$sup_Hello user
-            string helperString=whole;
+            for(int tindex=0; whole.find("$")!=-1; tindex++) {
+                arr[tindex]=whole.substr(0, whole.find("$"));
+                whole=whole.substr(whole.find("$")+1, whole.length());
+            }
 
-            for(int sindex=0; sindex<numberOf(origWhole,"$"); sindex++)
-            {
-                input[globalCounter]=whole.substr(0,(helperString.find("$")));//Write input to input[inputs]
-
-                output[globalCounter]=outputAll;//Give output of the same index the necessary output
-
-                helperString=whole.substr(whole.find("$")+1,whole.length());//Bumps the string past the $
-
-                whole=helperString;//Assigns string
-
-                globalCounter++;//Moves the global array counter
-            }//END for
-
-            //Code repeated because above loop leaves one normal output
+            addStrArr(arr, (whole.substr(whole.find("_")+1,whole.length())), tokens);
             addStr(whole);
         }//END mult IF
 
         else
-        {
-            if(replaceIt)//No comments, no multiple inputs
-                whole=origWhole;
             addStr(whole);
-        }
     }//END for
     Gmembers=globalCounter;
 
@@ -249,8 +252,7 @@ void setupStrings(string &file, int wingNum)
   *Returns the RAM used by the strings to the memory.
   *The program will be unusable after this until setupStrings() is manually called.
   */
-void clearMemory()
-{
+void clearMemory() {
     delete &input;
     delete &output;
     delete &fileName;
@@ -260,9 +262,8 @@ void clearMemory()
 *Causes explicit learning. This should be triggerd with a is_a statement.
 *For instance, that elephant IS fat. What is that elephant? fat.
 *@param toParse - The string to learn from
-*///Will be implemented in Semantic 4.0 with a feature to say "X is Y".
-void exlLearn(string toParse)
-{
+*/
+void exlLearn(string toParse) {
     fstream inFile;//The learn file, assigned using globals
     inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
 
@@ -271,12 +272,9 @@ void exlLearn(string toParse)
     stringstream toWrite;
     string toSOn;
 
-    if(toParse.find(" is ")!=-1)
-    {
+    if(toParse.find(" is ")!=-1) {
         toSOn=" is ";
-    }
-    else if(toParse.find(" are ")!=-1)
-    {
+    } else if(toParse.find(" are ")!=-1) {
         toSOn=" are ";
     }
 
@@ -298,8 +296,7 @@ void exlLearn(string toParse)
   *                  Since version 4.0, this function can return "exlLearned" if it has been
   *                  explicitly taught.
   */
-string formulateResponse(string toReplyTo)
-{
+string formulateResponse(string toReplyTo) {
     /*Primitives*/
     bool good=false;//Whether or not the statement was found.
     /*Objects*/
@@ -308,27 +305,23 @@ string formulateResponse(string toReplyTo)
     /*Initializations*/
     buff = sanitizeInput(toReplyTo);
 
-    for(unsigned int index=0; index<Gmembers; index++)
-    {
-        if(buff.find(input[index])!=-1&&input[index].length()>1)//Exact match (input file INSIDE buff)
-        {
+    for(unsigned int index=0; index<Gmembers; index++) {
+        if(buff.find(input[index])!=-1&&input[index].length()>1) { //Exact match (input file INSIDE buff)
             return output[index];
             good=true;
         }
 
-        else if((input[index].length()==buff.length())&&(rand()%wing==5))//WING
-        {
+        else if((input[index].length()==buff.length())&&(rand()%wing==5)) { //WING
             return output[index];//If the lengths are the same
             good=true;
         }
     }
 
-    if(toReplyTo.find("is")!=-1||toReplyTo.find("are")!=-1){
+    if(toReplyTo.find("is")!=-1||toReplyTo.find("are")!=-1) {
         return "exlLearned";
     }
 //This will only execute if proper output is not found
-    if(!good)
-    {
+    if(!good) {
         return "learn(toReplyTo)";//Interpreted in main
     }
 }
@@ -341,8 +334,7 @@ string formulateResponse(string toReplyTo)
   *you are using interactive mode, leave this blank
   *@return learned - Learned is returned to make output better.
   */
-string learn(string toLearn, string learned)
-{
+string learn(string toLearn, string learned) {
 
     /*Objects*/
     fstream inFile;//The learn file
@@ -351,8 +343,7 @@ string learn(string toLearn, string learned)
     inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
 
     /*Function Body*/
-    if(learned.length()<=1) //Interactive Mode
-    {
+    if(learned.length()<=1) { //Interactive Mode
         cout << "What I should say: ";
         getline(cin,learned);
         cout << endl;
@@ -365,3 +356,4 @@ string learn(string toLearn, string learned)
 
     return learned;
 }
+
