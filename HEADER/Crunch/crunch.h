@@ -16,10 +16,8 @@ string cc;//The crunch command.
   *@param ccmd - The command to parse
   *@return true if it is a command, false otherwise.
   */
-bool isCrnchCmd(string ccmd)
-{
-    if(ccmd.length()>1)
-    {
+bool isCrnchCmd(string ccmd) {
+    if(ccmd.length()>1) {
 
         if(ccmd.find("#")!=-1&&ccmd.find(" ")==-1&&crunchListed(ccmd))//Cannot have space, must be listed
             return true;
@@ -31,8 +29,7 @@ bool isCrnchCmd(string ccmd)
   *Loads the crunch command into the buffer.
   *@param ccmd - The crunch command
   */
-void loadCrunchCommand(string ccmd)
-{
+void loadCrunchCommand(string ccmd) {
     cc=ccmd;
 }
 
@@ -40,12 +37,9 @@ void loadCrunchCommand(string ccmd)
   *Runs the crunch command from the master crunch library. The library
   *has an array of names that will be searched to find the appropriate function.
   */
-void executeCrunch()
-{
-    if(cc.length()>0)
-    {
+void executeCrunch() {
+    if(cc.length()>0) {
         getFun(cc)();//Executes the crunch command with the name of cc.
-    }
-    else
+    } else
         getFun("#intro")();//Help function
 }

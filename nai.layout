@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="HEADER/Crunch/crunch.h" open="1" top="0" tabpos="3">
+		<Cursor position="1057" topLine="0" />
+	</File>
+	<File name="HEADER/Crunch/crunchLand.h" open="1" top="0" tabpos="4">
+		<Cursor position="6863" topLine="171" />
+	</File>
+	<File name="HEADER/Crunch/voids.h" open="1" top="0" tabpos="5">
+		<Cursor position="9770" topLine="299" />
+	</File>
+	<File name="HEADER/aiCore.h" open="1" top="0" tabpos="2">
+		<Cursor position="2276" topLine="71" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="2793" topLine="37" />
+	</File>
+</CodeBlocks_layout_file>

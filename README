@@ -19,7 +19,7 @@ The name is based on a major feature at that revision. For example, WING was the
 nai will always be the name of the executable despite the earlier name "Wing" and the next version being called "mantic".
 
 VERSION
-mantic - 4.2: Added GNU-like options like --help and --version.
+mantic - 4.3: Really cleaned up the body of the whole program while adding some utilities for contributors to play with.
 
 FUTURE PLANS
 In future versions of semantic: Add function cleanFile() so the learn file can optimize itself for size. I also want to add 
@@ -38,7 +38,10 @@ HEADER/Crunch/crunch.h - Top-level abstractions for crunchLand
 HEADER/Crunch/crunchLand.h - Lowest level. Returns the functions relating to crunches.
 HEADER/Crunch/voids.h - No-mans-land, basically. Holds big things for crunchLand and GNU commands.
 
-DEBIAN/* - Used for created the Debian file.
+res/* - Non-critical files that stand as an example
+crit/* - After 4.5 these will hold critical files such as the configuration file.
+
+DEBIAN/* - Used for creating the Debian installation file file.
 
 CHANGELOG
 WING - 1: Added the "wing" feature, where the program will try to guess what you wanted to tell it.
@@ -46,12 +49,13 @@ WING - 1.1: Updated the "wing" feature to be more accurate, added a default inpu
 WING - 1.2: Updated the "wing" feature again and fixed gravebang issues.
 WING - 1.5: Removed all gotos and added an interface to LibMath.h
 WING - 1.5.1: Added a new kind of sentence to rand, documentation, and formatted.
-WING - 1.6: Added another type of WING response and fixed
+WING - 1.6: Added another type of WING response and fixed another issue.
 WING - 1.6.1: Fixed a serious issue in the second WING response.
 WING - Semantic(1.6-2.0): Undocumented update. Tested some lexical stuff.
 
-nAI - (3.0): Complete rewrite of WING.
+nAI - (3.0): Complete rewrite of WING. Callbacks, singular file IO, a good library of utilities, cleaner code and an efficient body added.
 nAI - (3.5): Why the big jump in the version number? I added a lot to aiCore.h. Now people can wire the learning file themselves with comments and multichars.
 
 mantic - (4.0): Added semantic parses, made more efficient.
 mantic - (4.2): Added GNU-Like information commands
+mantic - (4.3): Added utilities, cleaned setupStrings(), removed variables to make it consume less memory.

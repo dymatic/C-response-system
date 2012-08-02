@@ -8,7 +8,9 @@
 using namespace std;
 
 const int gnus=2;//How many command line options there are
+const int gnuSetsNum=1;//How many options there are
 void (*gnuFun[gnus])()= {&versionGet, &helpGet}; //Options relating to non-execution information
+void (*gnuSets[gnuSetsNum])(string)={NULL};//Coming in 4.5
 string gnuPrompts[gnus][3]= {{"--version","-v", "yes"},{"-h", "--help", "yes"}}; //The names with the primary (-a) on [ind] and --arg on [ind][0]. At ind[3] "yes" means exit, "no" means stay
 
 /**
@@ -19,14 +21,14 @@ string gnuPrompts[gnus][3]= {{"--version","-v", "yes"},{"-h", "--help", "yes"}};
 */
 bool handleArgs(int argc, char**argv) {
     for(int index=1; index<argc; index++) {
-/*
-*LOOP OUTLINE
-*Iterate through arguments
-*Iterate through commands, comparing them to argument
-*Execute command if it is found, go to next argument otherwise
-*Exit if that is specified
-*Return false if nothing was done
-*/
+        /*
+        *LOOP OUTLINE
+        *Iterate through arguments
+        *Iterate through commands, comparing them to argument
+        *Execute command if it is found, go to next argument otherwise
+        *Exit if that is specified
+        *Return false if nothing was done
+        */
         for(int gnuCommands=0; gnuCommands<gnus; gnuCommands++) {
 
             if(string(argv[index])==gnuPrompts[gnuCommands][0]||string(argv[index])==gnuPrompts[gnuCommands][1]) {//If the --command or -c is found
@@ -40,6 +42,7 @@ bool handleArgs(int argc, char**argv) {
     }//END arg list
     return false;
 }//END function
+
 /**
   *Main runs in two different ways: argument and interactive modes.
   *In argument mode, it is run like this: program [path to learn file] [wing modifier]
@@ -56,13 +59,13 @@ int main(int argc, char**argv) {
     int wing;//Chance to wing it.
 
     /*Constants*/
-    const bool wantLearn=true;//Whether or not the bot should strive to learn(DEFAULT: TRUE)
-    const bool allowCrunch=true;//Whether or not to allow executing plugins. (DEFAULT: TRUE)
-    const bool allowExpllearn=true;//Whether or not to allow explicit non-confrontational learning (DEFAULT: TRUE)
+    const bool WANT_LEARN=true;//Whether or not the bot should strive to learn(DEFAULT: TRUE)
+    const bool ALLOW_CRUNCH=true;//Whether or not to allow executing plugins. (DEFAULT: TRUE)
+    const bool ALLOW_EXPLICIT=true;//Whether or not to allow explicit non-confrontational learning (DEFAULT: TRUE)
 
     string prompt     = "~$ ";
 
-    const char* noCrunchMsg="Permission Denied.";
+    const char* noCrunchMsg="Permission Denied.";//Used when crunch is not allowed
     const char* understood ="Understood";//After exlLearned
 
     if(argc<2||handleArgs(argc, argv)) { //START interactive
@@ -99,7 +102,7 @@ int main(int argc, char**argv) {
         if(isCrnchCmd(command)) {
             cout << endl;
 
-            if(allowCrunch) {
+            if(ALLOW_CRUNCH) {
                 loadCrunchCommand(command);
                 executeCrunch();
             }//END allowed
@@ -115,7 +118,7 @@ int main(int argc, char**argv) {
 
             target=formulateResponse(command);
 
-            if(target=="learn(toReplyTo)"&&wantLearn) { //Arrays not loaded right, WING not gotten, or new input
+            if(target=="learn(toReplyTo)"&&WANT_LEARN) { //Arrays not loaded right, WING not gotten, or new input
                 string learnSentence;//Response to self
 
                 cout << "I do not know how to reply to "<<command<<", please tell me.\n";
@@ -127,7 +130,7 @@ int main(int argc, char**argv) {
                 cout << "Got it. So, " << learnSentence<<endl<<endl;
             }//END learn
 
-            else if(target=="exlLearned"&&allowExpllearn) {
+            else if(target=="exlLearned"&&ALLOW_EXPLICIT) {
                 exlLearn(command);
                 target="Understood.";
             }

@@ -1,9 +1,0 @@
-Package: nai
-Version: 1.5-0ubuntu1
-Architecture: amd64
-Maintainer: Norton "dymatic" Jenkins <dominantshoe@gmail.com>
-Installed-Size: 600
-Depends: 
-Section: accessory
-Priority: optional
-Description: Mentor your own bot.

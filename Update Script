@@ -1,0 +1,16 @@
+#!/bin/bash
+#Script used to update all of the files here for debian packaging
+#PS: It also packages!
+rm $HOME'/Code::Blocks/Grade Calculator/nai/DEBIAN/usr/bin/nai'
+
+mv $HOME'/Code::Blocks/Grade Calculator/nai/bin/Debug/nai' $HOME'/Code::Blocks/Grade Calculator/nai/DEBIAN/usr/bin/nai'
+
+rm '$HOME/Code::Blocks/Grade Calculator/nai/DEBIAN/usr/share/doc/nai/README'
+
+mv '$HOME/Code::Blocks/Grade Calculator/nai/README' $HOME'/Code::Blocks/Grade Calculator/nai/DEBIAN/usr/share/doc/nai/README'
+
+fakeroot dpkg -b  $HOME'/Code::Blocks/Grade Calculator/nai/DEBIAN/'  $HOME'/Code::Blocks/Grade Calculator/nai/debbyDeb.deb'
+
+rm $HOME'/Code::Blocks/Grade Calculator/nai/nai_4.5-0ubuntu1_amd64'
+
+dpkg-name $HOME'/Code::Blocks/Grade Calculator/nai/debbyDeb.deb'

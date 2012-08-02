@@ -1,5 +1,5 @@
 /*
-  *AI 3 - Complete Rewire
+  *AI 4 - Complete Bump
   *This is free sofware with absolutely no warranty, expressed or implied.
   *The program is licensed under the GNU General Public License revision 2.
   *If you did not receive a copy of the GNU general public license, contact the
@@ -10,10 +10,10 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <vector>
 using namespace std;
 
 /*STATS*/
-int Gmembers;
 int wing;//Chance to guess
 int globalCounter;//Position in arrays
 /*STRINGS*/
@@ -26,9 +26,11 @@ string output[10000];
 
 /*FUNCTION IMPLEMENTATIONS*/
 //!Not my work
-void replaceAll(std::string& str,  std::string& from,  std::string& to) {
+void replaceAll(std::string& str,  std::string& from,  std::string& to)
+{
     size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+    while((start_pos = str.find(from, start_pos)) != std::string::npos)
+    {
         str.replace(start_pos, from.length(), to);
         start_pos += to.length();
     }
@@ -39,9 +41,10 @@ void replaceAll(std::string& str,  std::string& from,  std::string& to) {
 *@param input - The string to sanitize.
 *@return rMsg - The sanitized message
 */
-string sanitizeInput(string input) {
+string sanitizeInput(string input)
+{
     string punc[14]= {".",","," ",":",";","(",")","*","^","_","-","[","]","?"};//To remove
-    string whitespace;//
+    string whitespace="";
 
 
     string returnMessage;
@@ -60,15 +63,15 @@ string sanitizeInput(string input) {
   *@param file - The file path to the target file.
   *@return counter - The number of lines in the file.
   */
-int linec(string file) {
+int linec(string file)
+{
     /*Objects*/
     ifstream fileReader(file.c_str());
     string buff;
 
     int counter=0;
 
-    for(counter=0; getline(fileReader,buff); counter++)
-        ;
+    for(counter=0; getline(fileReader,buff); counter++);
     return counter;
 }
 /**
@@ -76,7 +79,8 @@ int linec(string file) {
 *@param toFindIn - The string to look in
 *@param lookingFor - The string you are looking for
 */
-int numberOf(string toFindIn, string lookingFor) {
+int numberOf(string toFindIn, string lookingFor)
+{
     /*Primitives*/
     int counter;
 
@@ -86,7 +90,8 @@ int numberOf(string toFindIn, string lookingFor) {
     /*Initializations*/
     counter=0;
 
-    while(toFindIn.find(lookingFor)!=-1) {
+    while(toFindIn.find(lookingFor)!=-1)
+    {
         counter++;
 
         buff=toFindIn.substr((toFindIn.find(lookingFor)+1),toFindIn.length());//Bumps past character
@@ -103,8 +108,10 @@ int numberOf(string toFindIn, string lookingFor) {
 *@param toSplit   - The string to remove sensitive strings from.
 *@param magicahar - The character used in the code file to denote a sensitive string. "$" is the standard.
 */
-void splitstr(string &toSplit, string magichar) {
-    if(toSplit.find(magichar)!=-1) {
+void splitstr(string &toSplit, string magichar)
+{
+    if(toSplit.find(magichar)!=-1)
+    {
         /*Objects*/
         stringstream buffer;
 
@@ -130,7 +137,8 @@ void splitstr(string &toSplit, string magichar) {
 *Adds a string to the arrays.
 *@param string - The string in in_out syntax.
 */
-void addStr(string msg) {
+void addStr(string msg)
+{
     input[globalCounter]=msg.substr(0,msg.find("_"));
     output[globalCounter]=msg.substr(msg.find("_")+1,msg.length());
 
@@ -142,7 +150,8 @@ void addStr(string msg) {
 *@param in - The string to add to the input
 *@param out - The string to add to the output arrays.
 */
-void addStr(string in, string out) {
+void addStr(string in, string out)
+{
     input[globalCounter] = in;
     output[globalCounter] = out;
 
@@ -155,41 +164,64 @@ void addStr(string in, string out) {
 *@param out - The output
 *@param argInput - The number of inputs to write
 */
-void addStrArr(string in[], string out, int argInput) {
-    for(int index=0; index<argInput; index++) {
+void addStrArr(string in[], string out, int argInput)
+{
+    for(int index=0; index<argInput; index++)
+    {
         input[globalCounter]=in[index];
         output[globalCounter]=out;
         globalCounter++;
     }
 }
-
+/**
+*Adds a vector of strings into memory.
+*@param inputs - The vector of inputs
+*@param out - The output to put on the output arrays.
+*/
+void addStrVec(vector<string> inputs, string out)
+{
+    for(int index=0; index<inputs.size(); index++)
+    {
+        input[globalCounter]=inputs[index];
+        output[globalCounter]=out;
+        globalCounter++;
+    }
+}
 /**
 *Splits a string on a given character, returning an array equal to the split string.
 *@param message - The string to split from
 *@param delim - What to split on
-*@param argc - The number of strings to have in the array
-*@return *strings - The array containing the strings
-*//*
-string** splitOn(string message, char *delim) {
-    string *rString[numberOf(message, string(delim))+1];
+*@return vStr - The vector of strings split from the message
+*/
+vector<string> splitOn(string message, string delim)
+{
 
-    for(int index=0; index<numberOf(message, string(delim)); index++) {
-        *rString[index]=message.substr(0, message.find(delim));
+    vector<string> rString(1);
 
-        message = message.substr(message.find(delim)+1, message.length());//Coming soon to a repo near you!
+    for(int index=0; message.find(delim)!=-1; index++)
+    {
+        rString.push_back(message.substr(0, message.find(delim)));
+        message = message.substr(message.find(delim)+1, message.length());
     }
-    *rString[numberOf(message, string(delim))] = message;
 
+    if(message.find("_")!=-1)//splitOn should not be used with whole IO identifier strings
+        message = message.substr(0, message.find("_")-1);
+
+    rString.push_back(message);
     return rString;
-}*/
+}
+
 /**
 *Removes a comment in between ~~s.
 *@param comment - The reference to the string containing a comment
 *@param delim   - The deliminator (~ is default)
 */
-void rmComment(string &comment, char *delim) {
-    if(comment.find(delim)!=-1&&numberOf(comment,delim)%2==0) { //Delims have to be even ex: ~remove me~
-        for(int index=0; index<numberOf(comment,delim)/2; index++) { // /2 because splitstr() removes both.
+void rmComment(string &comment, char *delim)
+{
+    if(comment.find(delim)!=-1&&numberOf(comment,delim)%2==0)   //Delims have to be even ex: ~remove me~
+    {
+        for(int index=0; index<numberOf(comment,delim)/2; index++)   // /2 because splitstr() removes both.
+        {
             splitstr(comment,delim);
         }
 
@@ -201,69 +233,39 @@ void rmComment(string &comment, char *delim) {
   *@param file - The path to the leaning file
   *@param wingNum - The chance to guess what the user wants without knowing
   */
-void setupStrings(string &file, int wingNum) {
+void setupStrings(string &file, int wingNum)
+{
     /*Objects*/
     ifstream reader(file.c_str());//Learn file
+    string whole;//An entire line from the learn file. Overwritten frequently
 
-    string whole;//An entire line from the learn file. Overwritten frequently/
-
-    /*Primitives*/
+    /*Initializations*/
     globalCounter=0;//Number of *_outputs to write to ARRAYS (not in file)
-
-    /*Intializations*/
     fileName=file;//Global learn file path
 
-    for(int index=0; index<linec(file); index++) {
-        /*This loop does:
-         0 Gets line
-         1 Strips comments
-         2 Writes multiple inputs to one output
-         3 Writes to the learn file
-         4 Sets filename and wing global variables*/
+    for(int index=0; index<linec(file); index++)
+    {
 
-        getline(reader,whole);
+        getline(reader,whole);//Get line
 
-        rmComment(whole, "~");
-        int tokens=numberOf(whole,"$");
-        if(whole.find("$")!=-1) {
-            /*$ seperates input that warrant the same output,
-              like "hi" and "hey" both returning "Hello".*/
+        rmComment(whole, "~");//Strip comments
 
-            string arr[numberOf(whole, "$")];//Array of Inputs
-
-            for(int tindex=0; whole.find("$")!=-1; tindex++) {
-                arr[tindex]=whole.substr(0, whole.find("$"));
-                whole=whole.substr(whole.find("$")+1, whole.length());
-            }
-
-            addStrArr(arr, (whole.substr(whole.find("_")+1,whole.length())), tokens);
-            addStr(whole);
-        }//END mult IF
+        if(whole.find("$")!=-1)//Add multiple inputs to one output
+            addStrVec(splitOn(whole, "$"), whole.substr(whole.find("_")+1, whole.length()));
 
         else
             addStr(whole);
     }//END for
-    Gmembers=globalCounter;
-
     wing=wingNum;
 }
 
-/**
-  *Returns the RAM used by the strings to the memory.
-  *The program will be unusable after this until setupStrings() is manually called.
-  */
-void clearMemory() {
-    delete &input;
-    delete &output;
-    delete &fileName;
-    delete &Gmembers;
-}
 /**
 *Causes explicit learning. This should be triggerd with a is_a statement.
 *For instance, that elephant IS fat. What is that elephant? fat.
 *@param toParse - The string to learn from
 */
-void exlLearn(string toParse) {
+void exlLearn(string toParse)
+{
     fstream inFile;//The learn file, assigned using globals
     inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
 
@@ -272,9 +274,12 @@ void exlLearn(string toParse) {
     stringstream toWrite;
     string toSOn;
 
-    if(toParse.find(" is ")!=-1) {
+    if(toParse.find(" is ")!=-1)
+    {
         toSOn=" is ";
-    } else if(toParse.find(" are ")!=-1) {
+    }
+    else if(toParse.find(" are ")!=-1)
+    {
         toSOn=" are ";
     }
 
@@ -292,11 +297,12 @@ void exlLearn(string toParse) {
   *that forces a learn to take place.
   *@param toReplyTo - The message to reply to.
   *@return response - The response, "learn(toReplyTo)" if a learning is required. The
-  *                  thought process here is that main can handle it (makes function portable).
+  *                  thought process here is that main or a wrapper can handle it (makes function portable).
   *                  Since version 4.0, this function can return "exlLearned" if it has been
   *                  explicitly taught.
   */
-string formulateResponse(string toReplyTo) {
+string formulateResponse(string toReplyTo)
+{
     /*Primitives*/
     bool good=false;//Whether or not the statement was found.
     /*Objects*/
@@ -305,36 +311,42 @@ string formulateResponse(string toReplyTo) {
     /*Initializations*/
     buff = sanitizeInput(toReplyTo);
 
-    for(unsigned int index=0; index<Gmembers; index++) {
-        if(buff.find(input[index])!=-1&&input[index].length()>1) { //Exact match (input file INSIDE buff)
+    for(unsigned int index=0; index<globalCounter; index++)
+    {
+        if(buff.find(input[index])!=-1&&input[index].length()>1)   //Exact match (input file INSIDE buff)
+        {
             return output[index];
             good=true;
         }
 
-        else if((input[index].length()==buff.length())&&(rand()%wing==5)) { //WING
+        else if((input[index].length()==buff.length())&&(rand()%wing==5))   //WING
+        {
             return output[index];//If the lengths are the same
             good=true;
         }
     }
 
-    if(toReplyTo.find("is")!=-1||toReplyTo.find("are")!=-1) {
+    if(toReplyTo.find("is")!=-1||toReplyTo.find("are")!=-1)//EXLlearn
+    {
         return "exlLearned";
     }
 //This will only execute if proper output is not found
-    if(!good) {
+    if(!good)
+    {
         return "learn(toReplyTo)";//Interpreted in main
     }
 }
 
 
 /**
-  *Causes the robot to learn from its mistakes.
+  *Causes the bot to learn from its mistakes.
   *@param toLearn - The message that tripped it up
   *@param learned - The message to implant in the file. If
   *you are using interactive mode, leave this blank
   *@return learned - Learned is returned to make output better.
   */
-string learn(string toLearn, string learned) {
+string learn(string toLearn, string learned)
+{
 
     /*Objects*/
     fstream inFile;//The learn file
@@ -342,8 +354,9 @@ string learn(string toLearn, string learned) {
     /*Intializations*/
     inFile.open(fileName.c_str(),fstream::in|fstream::out|fstream::app);
 
-    /*Function Body*/
-    if(learned.length()<=1) { //Interactive Mode
+
+    if(learned.length()<=1)   //Interactive Mode
+    {
         cout << "What I should say: ";
         getline(cin,learned);
         cout << endl;
