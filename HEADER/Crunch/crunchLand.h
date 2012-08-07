@@ -32,7 +32,8 @@ int (*getFun(string name))();
 /**
 *Welcomes the user to crunchLand, directing them on what to do.
 */
-int intro() {
+int intro()
+{
     /*Variables*/
     string innercmmd;
     stringstream outercmmd;
@@ -46,9 +47,12 @@ int intro() {
 
     getline(cin,innercmmd);
 
-    if(innercmmd.find("#")!=-1) {
+    if(innercmmd.find("#")!=-1)
+    {
         getFun(innercmmd)();
-    } else {
+    }
+    else
+    {
         outercmmd<<"#";//Adds # for getFUn
         outercmmd<<innercmmd;//Now has #plugin syntax
         getFun(outercmmd.str())();//Executes crunch
@@ -94,7 +98,8 @@ string docs[members]= {"Outputs \"hello\" to the screen","Generates a password b
 /**
 *Core utility for listing crunch commands.
 */
-int lsc() {
+int lsc()
+{
     for(int index=0; index<members; index++)
         cout << "#"<<funcNames[index]<<endl;
     return 0;
@@ -103,8 +108,10 @@ int lsc() {
 /**
 *Core utility for seeing if a crunch command exists
 */
-bool crunchListed(string cc) {
-    for(int index=0; index<members; index++) {
+bool crunchListed(string cc)
+{
+    for(int index=0; index<members; index++)
+    {
         if(cc.find(funcNames[index])!=-1)//Finds the string instead of matching
             return true;            //Logic is that the #  will mess the process up
     }
@@ -113,7 +120,8 @@ bool crunchListed(string cc) {
 /**
 *Core utility for finding the id of a crunch command.
 */
-int crnchID() {
+int crnchID()
+{
     /*Objects*/
     string command;//Original Command
 
@@ -121,11 +129,13 @@ int crnchID() {
     cin  >> command;
     cout << endl;
 
-    if(command.find("#")!=-1) {
+    if(command.find("#")!=-1)
+    {
         command=command.substr(1,command.length());//If it has a #, get rid of it.
     }
 
-    for(int index=0; index<members; index++) {
+    for(int index=0; index<members; index++)
+    {
         if(command==funcNames[index])
             cout << "Crunch ID: "<<index<<endl;
     }
@@ -136,7 +146,8 @@ int crnchID() {
 /**
 *Core utility for returning function docs.
 */
-int desc() {
+int desc()
+{
     /*Objects*/
     string helper;
 
@@ -147,12 +158,14 @@ int desc() {
 
     if(helper.find("<")!=-1&&helper.find(">")!=-1)//MUST be a set
         cout << docs[atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str())];//Gets the docs at <index>
-    else { //BEGIN name search
+    else   //BEGIN name search
+    {
         if(helper.find("#")!=-1)
             helper=helper.substr(0, helper.length());
 
         for(int index=0; index<members; index++)
-            if(funcNames[index]==helper) {
+            if(funcNames[index]==helper)
+            {
                 cout << docs[index];
                 break;
             }
@@ -163,9 +176,11 @@ int desc() {
 /**
 *Core utility that returns all of the information of all crunch commands.
 */
-int fisc() {
+int fisc()
+{
 //Output EVERYTHING
-    for(int index=0; index<members; index++) {
+    for(int index=0; index<members; index++)
+    {
         cout << "Name: "<<funcNames[index]<<endl;
         cout << "ID: "  <<index<<endl;
         cout << "Desc: "<<docs[index]<<endl<<endl;
@@ -175,7 +190,8 @@ int fisc() {
 /**
 *Core utility that returns all of the information for a single crunch command.
 */
-int isc() {
+int isc()
+{
     /*Objects*/
     string helper;//Line of input
 
@@ -187,18 +203,23 @@ int isc() {
     getline(cin, helper);
     cout << endl;
 
-    if(helper.find("<")!=-1&&helper.find(">")!=-1) {
+    if(helper.find("<")!=-1&&helper.find(">")!=-1)
+    {
         idT = atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str());//Gets number in between <>'s
         cout << "Name: "<<funcNames[idT]<<endl;
         cout << "ID: "  <<idT<<endl;
         cout << "Desc: "<<docs[idT]<<endl<<endl;
-    } else { //BEGIN name search
+    }
+    else     //BEGIN name search
+    {
 
         if(helper.find("#")==-1)
             helper=helper.substr(0, helper.length());
 
-        for(int index=0; index<members; index++) {
-            if(funcNames[index]==helper) {
+        for(int index=0; index<members; index++)
+        {
+            if(funcNames[index]==helper)
+            {
                 cout << "Name: "<<funcNames[index]<<endl;
                 cout << "ID: "  <<index<<endl;
                 cout << "Desc: "<<docs[index]<<endl<<endl;
@@ -213,9 +234,12 @@ int isc() {
   *@param name - The name of the function.
   *@return *fun - The pointer to the function
   */
-int (*getFun(string name))() {
-    for(int index=0; index<members; index++) {
-        if(name.substr(1,name.length())==funcNames[index]) { //Gets rid of the crunch symbol
+int (*getFun(string name))()
+{
+    for(int index=0; index<members; index++)
+    {
+        if(name.substr(1,name.length())==funcNames[index])   //Gets rid of the crunch symbol
+        {
             return arrPts[index];
         }//END name match if
     }//END full array search

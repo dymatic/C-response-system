@@ -1,0 +1,3 @@
+allow crunch:true   //Can Execute crunch commands
+allow explicit:true//Can learn explicitly (should always be true)
+allow learn: true //Can ask to learn (set to false for IRC)

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1343931939 source:/home/nate/Code::Blocks/Grade Calculator/nai/main.cpp
+1344301805 source:/home/nate/Code::Blocks/Grade Calculator/nai/main.cpp
 	<iostream>
 	<cstdlib>
 	<time.h>
@@ -7,19 +7,20 @@
 	<cstring>
 	"HEADER/Crunch/crunch.h"
 	"HEADER/aiCore.h"
+	"HEADER/mainHelper.h"
 
-1343497427 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/Crunch/crunch.h
+1344301797 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/Crunch/crunch.h
 	<iostream>
 	<cstdlib>
 	"crunchLand.h"
 
-1343497427 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/Crunch/crunchLand.h
+1344301797 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/Crunch/crunchLand.h
 	<iostream>
 	<sstream>
 	<cstdlib>
 	"voids.h"
 
-1343931563 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/Crunch/voids.h
+1344301797 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/Crunch/voids.h
 	<iostream>
 	<cstdlib>
 
@@ -33,4 +34,12 @@
 1343931428 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/janitor.h
 	<iostream>
 	"aiCore.h"
+
+1344301546 /home/nate/Code::Blocks/Grade Calculator/nai/mainHelper.h
+	<fstream>
+	<iostream>
+
+1344301821 /home/nate/Code::Blocks/Grade Calculator/nai/HEADER/mainHelper.h
+	<fstream>
+	<iostream>
 

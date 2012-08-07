@@ -17,14 +17,16 @@ using namespace std;
 /**
 *The cookie-cutter crunch plugin.
 */
-int hello() {
+int hello()
+{
     cout << "Hello!"<<endl<<endl;
     return 0;
 }
 /**
 *Calls exit
 */
-int quit() {
+int quit()
+{
     exit(0);
     return 1;
 }
@@ -33,7 +35,8 @@ int quit() {
 *Outputs a lot of text to the screen
 *based on a control
 */
-int spew() {
+int spew()
+{
     stringstream buffer;
 
     string alphaL  = "abcdefghijklmnopqrstuvwxyz";
@@ -56,22 +59,27 @@ int spew() {
     cout << endl;
 
     int characters=0;
-    for(int index=0; index<intensity; index++) {
-        if(labels.find("0")!=-1&&characters<intensity) {
+    for(int index=0; index<intensity; index++)
+    {
+        if(labels.find("0")!=-1&&characters<intensity)
+        {
             buffer << alphaL.at(rand()%alphaL.length());
             characters++;
         }
 
-        if(labels.find("1")!=-1&&characters<intensity) {
+        if(labels.find("1")!=-1&&characters<intensity)
+        {
             buffer << alphaC.at(rand()%alphaC.length());
             characters++;
         }
-        if(labels.find("2")!=-1&&characters<intensity) {
+        if(labels.find("2")!=-1&&characters<intensity)
+        {
             buffer << numeric.at(rand()%numeric.length());
             characters++;
         }
 
-        if(labels.find("3")!=-1&&characters<intensity) {
+        if(labels.find("3")!=-1&&characters<intensity)
+        {
             buffer << symbols.at(rand()%symbols.length());
             characters++;
         }
@@ -85,13 +93,15 @@ int spew() {
 /**
 *Stores population and how many days have gone buy without disaster.
 */
-struct world {
+struct world
+{
 
     int timesWithout; //Times without disaster or population boom
     int population;
 
     string name;
-    world(int p, string s) {
+    world(int p, string s)
+    {
         population=p;
         name=s;
     }
@@ -101,7 +111,8 @@ struct world {
 *@param w - The world where the disaster chance is being calculated.
 *@return the probability that the world will have a disaster.
 */
-int willDisaster(world w) {
+int willDisaster(world w)
+{
     if(w.timesWithout<=1)
         return 10;
     else return w.timesWithout*10;
@@ -110,7 +121,8 @@ int willDisaster(world w) {
 *The world loses a random number of people. The number can be as high as the total population.
 *@param w - The world where the disaster will occur.
 */
-void disaster(world & w) {
+void disaster(world & w)
+{
     w.population-=rand()%w.population;
 }
 /**
@@ -119,7 +131,8 @@ void disaster(world & w) {
 *@param w - The world where chance is being calculated.
 *
 */
-int willBoom(world w) {
+int willBoom(world w)
+{
     if(w.timesWithout<=1)
         return 10;//Uses chance to increase the chance of a boom.
     else return w.timesWithout*10;
@@ -128,14 +141,16 @@ int willBoom(world w) {
 *Adds a random number of people to the population. This number can be as high as the current population.
 *@param w- The world where the boom will occur.
 */
-void boom(world & w) {
+void boom(world & w)
+{
     w.population+=rand()%w.population;//Randomly adds people, decreasing with population.
 }
 /**
 *Plays a simulation of a town during a time of an advanced rate of death.
 *The function will output and ask for input.
 */
-int populationGame() {
+int populationGame()
+{
 
     int initPop;
     string initName;
@@ -156,19 +171,24 @@ int populationGame() {
     cout << "Population of " <<w.name <<" over time."<<endl;
     cout << "Initial population is "<<w.population<<"." <<endl;
 
-    for(int index=0; index<100; index++) {
+    for(int index=0; index<100; index++)
+    {
 
         temp=w.population;
 
-        if(willDisaster(w)>=rand()%100) {
+        if(willDisaster(w)>=rand()%100)
+        {
             disaster(w);
             w.timesWithout=0;
-        } else w.timesWithout++;
+        }
+        else w.timesWithout++;
 
-        if(willBoom(w)>=rand()%100) {
+        if(willBoom(w)>=rand()%100)
+        {
             boom(w);
             w.timesWithout=0;
-        } else w.timesWithout++;
+        }
+        else w.timesWithout++;
 
         if(temp!=*&w.population)
             cout <<"Day "<<index<<": "<< w.population <<endl;
@@ -180,7 +200,8 @@ int populationGame() {
 }
 
 /**Skips a virtual rock along water*/
-int skip() {
+int skip()
+{
     double initialSpeed;
 
     cout << "What is the initial speed?\n> ";
@@ -191,15 +212,18 @@ int skip() {
 
     int skips = rand()%10;
     int temp=skips;
-    for(int mainLoop=0; skips>0; mainLoop++) {
+    for(int mainLoop=0; skips>0; mainLoop++)
+    {
 
-        for(int index=0; height<0; index++) {
+        for(int index=0; height<0; index++)
+        {
             height-=(7-((initialSpeed/index)+mainLoop));
 
             if(height<0)
                 height=0;
 
-            if(height<=0) {
+            if(height<=0)
+            {
                 break;
             }
 
@@ -214,23 +238,27 @@ int skip() {
 /**
 *Launches a bullet at the speed of binary!
 **/
-int launch() {
+int launch()
+{
     double initVel=0.;
     double initHeight=0.;
 
     unsigned int counter=0;
-    do {
+    do
+    {
         cout <<"Initial velocity (feet/sec): ";
         cin >> initVel;
         cout << "\nInitial height (feet): ";
         cin >> initHeight;
-    } while((initVel>=0||initVel<=0)&&(initHeight>=0||initHeight<=0));
+    }
+    while((initVel>=0||initVel<=0)&&(initHeight>=0||initHeight<=0));
     cout << "Round fired! Stats about to show."<<endl;
 
     double height=initHeight;
     double vel=initVel;
 
-    for(int index=0; vel>0&&height>0; index++) {
+    for(int index=0; vel>0&&height>0; index++)
+    {
         cout << "Second "<<counter<<": "<<height<<"feet, "<<vel<<" feet/second."<<endl<<endl;
 
         vel-=32+index;
@@ -243,7 +271,8 @@ int launch() {
     bool detail;
     if(vel<0&&height>0)
         detail=true;
-    if(vel<0) {
+    if(vel<0)
+    {
         vel=0;
     }
     cout <<"Firing complete. Advanced stats:" <<endl<<endl;
@@ -260,7 +289,8 @@ int launch() {
     cout <<"Final Velocity: \t "<<vel<<" feet/sec";
     cout <<"\n  Final height: \t "<<height<<" feet" <<endl <<endl;
 
-    if(detail==true) {
+    if(detail==true)
+    {
         cout << "*You may be thinking that a velocity of 0 and a height above 0 is impossible. However, only forward motion is calculated by this applet."<<endl;
         cout << "If this is the case, the bullet is moving at terminal velocity. That is the fastest gravity and wind resistance allow it to fall."<<endl<<endl;
     }
@@ -270,13 +300,15 @@ int launch() {
 *Throws a virtual ball at the roof.
 *@param strength - How hard to throw the ball
 */
-int throwBall() {
+int throwBall()
+{
 
     short score=0;
 
     double strength=0.;
 
-    for(double total=0; abs(score)<5;) {
+    for(double total=0; abs(score)<5;)
+    {
         cout << "Throw strength: ";
         cin  >> strength;
         cout << endl;
@@ -307,7 +339,8 @@ int throwBall() {
 *Booky tells me exactly how to manage my time, so I figured I would hardcode it into this program.
 *Like all VoidGames, this function collects input and outputs text.
 */
-int booky() {
+int booky()
+{
 //Even though this is a void game, its own crunch command.
     double total, on;
     int days;
@@ -340,12 +373,14 @@ int booky() {
 *the only valid ones. Quit quits the program, Exit exits the terminal. Set takes an argument
 *that begins the prompt, which is % by default for zsh lovers.
 */
-int terminal() {
+int terminal()
+{
     string cmd;
     string prompt="> ";
     cout << "Enjoy your shell. Type Quit to exit the program,"
          << " Exit to close the terminal, and Set<promptgoeshere> to set the prompt."<<endl;
-    do {
+    do
+    {
         cout << prompt;
         getline(cin, cmd);
         cout << endl;
@@ -357,32 +392,39 @@ int terminal() {
         else if(cmd=="Exit")
             return 0;
 
-        else if(cmd.find("Set")!=-1) {
+        else if(cmd.find("Set")!=-1)
+        {
             string helperStr = cmd;
             string p1=cmd.substr((helperStr.find("<")+1),(helperStr.find(">")-2));
             prompt=p1.substr(0,p1.length()-1);
             continue;
         }
 
-        else {//Shell command
+        else  //Shell command
+        {
             system(cmd.c_str());
             system(" ");//Extremely shoddy, yet functional.
         }
         cout << endl;
-    } while(cmd!="Quit");//END body loop
+    }
+    while(cmd!="Quit");  //END body loop
     cout << endl << endl;
     return 0;
 }
 
 //BEGIN gnus
-void versionGet() {
+void versionGet(string arg)
+{
     cout << version << endl;
 }
 
-void helpGet() {
+void helpGet(string arg)
+{
     cout << "Welcome to nAI version "<<version<<"."<<endl
          << "To get started all you need to do is start talking to the bot." <<endl
          << "The bot will build its own learn file from talking, but you can"<<endl
          << "set one up yourself. The syntax is documented on the nAI wiki." <<endl
          << "#intro will get you started with Crunch commands."              <<endl;
 }
+
+//Begin gnuSets
