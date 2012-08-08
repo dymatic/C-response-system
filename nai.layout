@@ -2,18 +2,24 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 	<File name="HEADER/Crunch/crunch.h" open="1" top="0" tabpos="3">
-		<Cursor position="1057" topLine="0" />
+		<Cursor position="440" topLine="15" />
 	</File>
 	<File name="HEADER/Crunch/crunchLand.h" open="1" top="0" tabpos="4">
-		<Cursor position="6863" topLine="171" />
+		<Cursor position="5869" topLine="210" />
 	</File>
 	<File name="HEADER/Crunch/voids.h" open="1" top="0" tabpos="5">
-		<Cursor position="2318" topLine="61" />
+		<Cursor position="2234" topLine="394" />
 	</File>
 	<File name="HEADER/aiCore.h" open="1" top="0" tabpos="2">
-		<Cursor position="424" topLine="48" />
+		<Cursor position="2030" topLine="336" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="420" topLine="7" />
+	<File name="HEADER/mainHelper.h" open="1" top="1" tabpos="6">
+		<Cursor position="544" topLine="0" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="173" topLine="92" />
+	</File>
+	<File name="mainHelper.h" open="0" top="0" tabpos="0">
+		<Cursor position="2006" topLine="61" />
 	</File>
 </CodeBlocks_layout_file>

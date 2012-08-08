@@ -11,6 +11,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <vector>
+
+#include "nsl.h"
 using namespace std;
 
 /*STATS*/
@@ -25,113 +27,34 @@ string output[10000];
 /*RESOURCES*/
 
 /*FUNCTION IMPLEMENTATIONS*/
-//!Not my work
-void replaceAll(std::string& str,  std::string& from,  std::string& to)
-{
-    size_t start_pos = 0;
-    while((start_pos = str.find(from, start_pos)) != std::string::npos)
-    {
-        str.replace(start_pos, from.length(), to);
-        start_pos += to.length();
-    }
-}
 /**
-*Makes the input conform to a certain set of standards.
-*Whitespace is trimmed and it is made lowercase.
-*@param input - The string to sanitize.
-*@return rMsg - The sanitized message
+*At setupStrings() there can be a wildcard string where one response is chosen over another.
+*%is the delimiter for the wildcard.
+*This function assumes old_new1%new2%... syntax
 */
-string sanitizeInput(string input)
+bool hasWildCard(string message)
 {
-    string punc[14]= {".",","," ",":",";","(",")","*","^","_","-","[","]","?"};//To remove
-    string whitespace="";
+    if(message.find("%")!=-1)
+        return true;
 
-
-    string returnMessage;
-
-    for(unsigned int index=0; index<14; index++)//Removes punctuation
-        replaceAll(input,punc[index],whitespace);
-
-    for(unsigned int index=0; index<input.length(); index++)//Makes lowercase
-        returnMessage+=(tolower(input.at(index)));
-
-    return returnMessage;
+    return false;
 }
-/**
-  *Counts the number of lines in a file.
-  *Depending on the size of the file, this is a lengthy process.
-  *@param file - The file path to the target file.
-  *@return counter - The number of lines in the file.
-  */
-int linec(string file)
-{
-    /*Objects*/
-    ifstream fileReader(file.c_str());
-    string buff;
 
-    int counter=0;
-
-    for(counter=0; getline(fileReader,buff); counter++);
-    return counter;
-}
+vector<string> splitOn(string, string);
 /**
-*Finds the number of times a string occurs in a larger string.
-*@param toFindIn - The string to look in
-*@param lookingFor - The string you are looking for
+*Gets one output from the wildcard bunch.
+*@param message - The string to split from
+*@return output - The output taken from the wildcards
 */
-int numberOf(string toFindIn, string lookingFor)
+string getWildCard(string message)
 {
-    /*Primitives*/
-    int counter;
+    if(message.find("_")!=-1)
+        message=message.substr(message.find("_")+1, message.length());
 
-    /*Objects*/
-    string buff;
+    vector<string> wildcards = splitOn(message, "%");
 
-    /*Initializations*/
-    counter=0;
-
-    while(toFindIn.find(lookingFor)!=-1)
-    {
-        counter++;
-
-        buff=toFindIn.substr((toFindIn.find(lookingFor)+1),toFindIn.length());//Bumps past character
-        toFindIn=buff;
-    }
-    return counter;
-}
-
-/**
-*Splitstr is a very important function.
-*This finds text in between two magic characters and removes it from the string.
-*
-*Here it is used for comments in a learn file.
-*@param toSplit   - The string to remove sensitive strings from.
-*@param magicahar - The character used in the code file to denote a sensitive string. "$" is the standard.
-*/
-void splitstr(string &toSplit, string magichar)
-{
-    if(toSplit.find(magichar)!=-1)
-    {
-        /*Objects*/
-        stringstream buffer;
-
-        string copy;//A copy of toSplit
-
-        /*Initializations*/
-        copy=toSplit;
-
-        /*Body*/
-        if(toSplit.find(magichar)!=-1)//Put the text before first magichar in buffer
-            buffer<<copy.substr(0,toSplit.find(magichar));
-
-        if(copy.find(magichar)!=-1)//Make copy equal to the whole string minus the part up to the first magichar
-            copy=copy.substr(toSplit.find(magichar)+1,toSplit.length());
-
-        if(copy.find(magichar)!=-1)//Put the position of the magichar+1 in the buffer.
-            buffer<<copy.substr(copy.find("~")+1,copy.length());
-
-        toSplit=buffer.str();
-    }//End if
+//Nate Debug
+    return wildcards[rand()%wildcards.size()];
 }
 /**
 *Adds a string to the arrays.
@@ -140,20 +63,27 @@ void splitstr(string &toSplit, string magichar)
 void addStr(string msg)
 {
     input[globalCounter]=msg.substr(0,msg.find("_"));
-    output[globalCounter]=msg.substr(msg.find("_")+1,msg.length());
+
+    if(!hasWildCard(msg))
+        output[globalCounter]=msg.substr(msg.find("_")+1,msg.length());
+    else output[globalCounter]=getWildCard(msg);
 
     globalCounter++;
 }
 
 /**
 *Adds the two strings to the two IO arrays.
+*Can handle wildcard strings in output.
 *@param in - The string to add to the input
 *@param out - The string to add to the output arrays.
 */
 void addStr(string in, string out)
 {
     input[globalCounter] = in;
-    output[globalCounter] = out;
+
+    if(!hasWildCard(out))
+        output[globalCounter]=out.substr(out.find("_")+1,out.length());
+    else output[globalCounter]=getWildCard(out);
 
     globalCounter++;
 }
@@ -169,7 +99,10 @@ void addStrArr(string in[], string out, int argInput)
     for(int index=0; index<argInput; index++)
     {
         input[globalCounter]=in[index];
-        output[globalCounter]=out;
+
+        if(!hasWildCard(out))
+            output[globalCounter]=out;
+        else output[globalCounter]=getWildCard(out);
         globalCounter++;
     }
 }
@@ -183,7 +116,10 @@ void addStrVec(vector<string> inputs, string out)
     for(int index=0; index<inputs.size(); index++)
     {
         input[globalCounter]=inputs[index];
-        output[globalCounter]=out;
+
+        if(!hasWildCard(out))
+            output[globalCounter]=out;
+        else output[globalCounter]=getWildCard(out);
         globalCounter++;
     }
 }
@@ -196,7 +132,7 @@ void addStrVec(vector<string> inputs, string out)
 vector<string> splitOn(string message, string delim)
 {
 
-    vector<string> rString(1);
+    vector<string> rString(0);
 
     for(int index=0; message.find(delim)!=-1; index++)
     {
@@ -212,28 +148,12 @@ vector<string> splitOn(string message, string delim)
 }
 
 /**
-*Removes a comment in between ~~s.
-*@param comment - The reference to the string containing a comment
-*@param delim   - The deliminator (~ is default)
-*/
-void rmComment(string &comment, char *delim)
-{
-    if(comment.find(delim)!=-1&&numberOf(comment,delim)%2==0)   //Delims have to be even ex: ~remove me~
-    {
-        for(int index=0; index<numberOf(comment,delim)/2; index++)   // /2 because splitstr() removes both.
-        {
-            splitstr(comment,delim);
-        }
-
-    }
-}
-/**
   *Loads a learn file into RAM for use with response formulation.
   *Syntax for the learning file is input_output
   *@param file - The path to the leaning file
   *@param wingNum - The chance to guess what the user wants without knowing
   */
-void setupStrings(string &file, int wingNum)
+void setupStrings(string file, int wingNum)
 {
     /*Objects*/
     ifstream reader(file.c_str());//Learn file
@@ -251,10 +171,10 @@ void setupStrings(string &file, int wingNum)
         rmComment(whole, "~");//Strip comments
 
         if(whole.find("$")!=-1)//Add multiple inputs to one output
-            addStrVec(splitOn(whole, "$"), whole.substr(whole.find("_")+1, whole.length()));
+            addStrVec(splitOn(whole, "$"), whole.substr(whole.find("_")+1, whole.length()));//May have wildcard
 
         else
-            addStr(whole);
+            addStr(whole);//May have wildcard
     }//END for
     wing=wingNum;
 }

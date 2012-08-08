@@ -34,7 +34,8 @@ int main(int argc, char**argv)
     const char* noCrunchMsg="Permission Denied.";//Used when crunch is not allowed
     const char* understood ="Understood";//After exlLearned
 
-    if(argc<2||handleArgs(argc, argv))   //START interactive
+    bool handled=handleArgs(argc, argv);
+    if(argc<2||handled)   //START interactive
     {
         cout << "Path to learn file: ";
         getline(cin,path);
@@ -51,7 +52,7 @@ int main(int argc, char**argv)
         wing=atoi(argv[2]);
 
     }//END interactive mode
-    if(hasConf)
+    if(pConfig.path!=defPath)
     {
         pConfig.loadConfig(WANT_LEARN, ALLOW_CRUNCH, ALLOW_EXPLICIT);
         cout << "Finished loading"<<endl;

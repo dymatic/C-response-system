@@ -12,7 +12,7 @@
 */
 #include <iostream>
 #include <cstdlib>
-const char* version="4.2";
+const char* version="4.7";
 using namespace std;
 /**
 *The cookie-cutter crunch plugin.
@@ -22,6 +22,12 @@ int hello()
     cout << "Hello!"<<endl<<endl;
     return 0;
 }
+
+string getBetween(string whole, string thing1, string thing2){
+if(whole.find(thing1)!=-1&&whole.find(thing2)!=-1)
+return whole.substr(whole.find(thing1)+1, whole.find(thing2)-1);
+}
+
 /**
 *Calls exit
 */

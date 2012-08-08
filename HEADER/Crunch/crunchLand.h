@@ -1,20 +1,12 @@
 /*
-  *Since the first version of AI and prior to the update there has been a feature
-  *called "Crunch Commands". These are basically plugins taht can be called from the
-  *command prompt of the main applications. These small plugins are all no-argument
-  *and have some rules. They can ask for output, but they must ALL output two newlines
-  *at the end of the function. The function added to this library MUST be added to the
-  *array of function names. Also, the array holding the function pointers must be in the
-  *EXACT same order that the array pointing to the names of the function are located in.
-  *ALL return an int 0 to 1. 1 tells the program to stop immediately, not just the crunch
-  *applet.
-
-    TODO when adding a plugin: 1) Change the func point arr, 2) Change the funcNames arr, 3)
-    change the docs arrays, 4) Change the members constant.
+*In version 4.6, crunch Commands got their first makeover since the rewrite of the original
+*crunchCommands in nAI 3. Now a structure named crunchCommand holds the crunch commands. This
+*makes a mistake pretty much impossible when leaving data out. Before the program used a function pointer and string array.
   */
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+
 #include "voids.h"
 using namespace std;
 /*Indexing*/
@@ -27,8 +19,29 @@ int crnchID();
 int desc();
 int fisc();
 int isc();
-int (*getFun(string name))();
 
+//!Holds function and documentation level data
+struct crunchCommand
+{
+    int (*arrPtr)();//The function to execute
+    string funcName;//The name of the function
+    string documentation;//The documented that goes along with the function
+
+    crunchCommand(int (*arrP)(), string fName, string docs)
+    {
+        arrPtr=arrP;
+        funcName=fName;
+        documentation=docs;
+    }
+
+//!Runs the crunch command
+    void execute()
+    {
+        arrPtr();
+    }
+};
+
+crunchCommand getFun(string);
 /**
 *Welcomes the user to crunchLand, directing them on what to do.
 */
@@ -49,13 +62,13 @@ int intro()
 
     if(innercmmd.find("#")!=-1)
     {
-        getFun(innercmmd)();
+        getFun(innercmmd).execute();
     }
     else
     {
         outercmmd<<"#";//Adds # for getFUn
         outercmmd<<innercmmd;//Now has #plugin syntax
-        getFun(outercmmd.str())();//Executes crunch
+        getFun(outercmmd.str()).execute();//Executes crunch
     }
     return 0;
 }
@@ -67,9 +80,7 @@ int intro()
 *OUTLINE*
 *********
 * variables
-*arrPts - Array of function pointers
-*funcNames - Array of function names
-*docs - Array of short descriptions
+*Various crunch commands
 *lsc - Lists all commands
 *crunchListed - Whether or not crunch name is found
 *crunchID - Get the <ID> of a crunch command
@@ -79,21 +90,23 @@ int intro()
 *getFun - Return a function pointer equal to the requested command
 */
 
-/*Arrays*/
-int (*arrPts[members])() = {&hello,&spew,&quit,&intro,&desc,&crnchID,&lsc,&fisc,&isc,&populationGame,&skip,&launch,&throwBall,
-                            &booky, &terminal
-                           };
+crunchCommand helloC ( &hello,          "hello",   "Outputs \"hello\" to the screen");
+crunchCommand spewC  ( &spew,           "spew",    "Generates a password based on a phrase the user writes.");
+crunchCommand quitC  ( &quit,           "quit",    "Calls exit(0), closing the entire program");
+crunchCommand introC ( &intro,          "intro",   "Guides the user and teaches them about desc.");
+crunchCommand descC  ( &desc,           "desc",    "Gets the documentation for a crunch command");
+crunchCommand crncIdC( &crnchID,        "crunchID","Gets the Crunch ID for a command");
+crunchCommand lscC   ( &lsc,            "lsc",     "Lists the crunch commands");
+crunchCommand fiscC  ( &fisc,           "fisc",    "Gets the information for all crunch commands");
+crunchCommand iscC   ( &isc,            "isc",     "Gets all the information for one crunch command");
+crunchCommand pGameC ( &populationGame, "popGame", "Simulates a city during a time of disaster");
+crunchCommand skipC  ( &skip,           "skip",    "Simulates a skipping rock on idle water");
+crunchCommand launchC( &launch,         "launch",  "Simulates a fired object");
+crunchCommand bballC ( &throwBall,      "bball",   "Play a ball game of precision");
+crunchCommand bookyC ( &booky,          "booky",   "Distribute your reading workload");
+crunchCommand termC  ( &terminal,       "terminal","Execute external commands, even nAI");
 
-string funcNames[members]= {"hello", "spew", "quit","intro", "desc","crnchID","lsc","fisc","isc","popGame","skip","launch","bball","booky","terminal"
-                           };
-
-string docs[members]= {"Outputs \"hello\" to the screen","Generates a password based on a phrase user direction.",
-                       "Calls exit(0);.","Guides the user","Gets the documentation for a command", "Gets the Crunch ID for a command",
-                       "Lists the crunch commands","Gets the information for all crunch commands","Gets the information of a single crunch command.",
-                       "Simulates a city durting a time of disaster.","Simulates a skipping rock","Simultes a fired object","Play a ball game of precision.",
-                       "Distribute your workload","Runs the system shell, allowing you to execute external commands."
-                      };//Stores documentation for each plugin. If an author does not document their work, it will throw the whole system off.
-// If you do not plan on documenting, please leave a space and remember to change members.
+crunchCommand allCommands[members]= {helloC, spewC, quitC, introC, descC, crncIdC, lscC, fiscC, iscC, pGameC, skipC, launchC, bballC, bookyC, termC};
 
 /**
 *Core utility for listing crunch commands.
@@ -101,7 +114,7 @@ string docs[members]= {"Outputs \"hello\" to the screen","Generates a password b
 int lsc()
 {
     for(int index=0; index<members; index++)
-        cout << "#"<<funcNames[index]<<endl;
+        cout << "#"<<allCommands[index].funcName<<endl;
     return 0;
 }
 
@@ -112,7 +125,7 @@ bool crunchListed(string cc)
 {
     for(int index=0; index<members; index++)
     {
-        if(cc.find(funcNames[index])!=-1)//Finds the string instead of matching
+        if(cc.find(allCommands[index].funcName)!=-1)//Finds the string instead of matching
             return true;            //Logic is that the #  will mess the process up
     }
     return false;
@@ -136,7 +149,7 @@ int crnchID()
 
     for(int index=0; index<members; index++)
     {
-        if(command==funcNames[index])
+        if(command==allCommands[index].funcName)
             cout << "Crunch ID: "<<index<<endl;
     }
     cout << endl;
@@ -157,16 +170,16 @@ int desc()
     cout << endl;
 
     if(helper.find("<")!=-1&&helper.find(">")!=-1)//MUST be a set
-        cout << docs[atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str())];//Gets the docs at <index>
+        cout << allCommands[atoi(getBetween(helper, "<", ">").c_str())].documentation;//Gets the docs at <index>
     else   //BEGIN name search
     {
         if(helper.find("#")!=-1)
             helper=helper.substr(0, helper.length());
 
         for(int index=0; index<members; index++)
-            if(funcNames[index]==helper)
+            if(allCommands[index].funcName==helper)
             {
-                cout << docs[index];
+                cout << allCommands[index].documentation;
                 break;
             }
     }//END name search
@@ -181,9 +194,9 @@ int fisc()
 //Output EVERYTHING
     for(int index=0; index<members; index++)
     {
-        cout << "Name: "<<funcNames[index]<<endl;
+        cout << "Name: "<<allCommands[index].funcName<<endl;
         cout << "ID: "  <<index<<endl;
-        cout << "Desc: "<<docs[index]<<endl<<endl;
+        cout << "Desc: "<<allCommands[index].funcName<<endl<<endl;
     }
     return 0;
 }
@@ -205,24 +218,24 @@ int isc()
 
     if(helper.find("<")!=-1&&helper.find(">")!=-1)
     {
-        idT = atoi(helper.substr((helper.find("<")+1),helper.find(">")-1).c_str());//Gets number in between <>'s
-        cout << "Name: "<<funcNames[idT]<<endl;
+        idT = atoi(getBetween(helper, "<", ">").c_str());//Gets number in between <>'s
+        cout << "Name: "<<allCommands[idT].funcName<<endl;
         cout << "ID: "  <<idT<<endl;
-        cout << "Desc: "<<docs[idT]<<endl<<endl;
+        cout << "Desc: "<<allCommands[idT].documentation<<endl<<endl;
     }
     else     //BEGIN name search
     {
 
-        if(helper.find("#")==-1)
-            helper=helper.substr(0, helper.length());
+        if(helper.find("#")!=-1)
+            helper=helper.substr(1, helper.length());
 
         for(int index=0; index<members; index++)
         {
-            if(funcNames[index]==helper)
+            if(allCommands[index].funcName==helper)
             {
-                cout << "Name: "<<funcNames[index]<<endl;
+                cout << "Name: "<<allCommands[index].funcName<<endl;
                 cout << "ID: "  <<index<<endl;
-                cout << "Desc: "<<docs[index]<<endl<<endl;
+                cout << "Desc: "<<allCommands[index].documentation<<endl<<endl;
                 break;
             }
         }
@@ -232,15 +245,15 @@ int isc()
 /**
   *Returns the function matching the specified name.
   *@param name - The name of the function.
-  *@return *fun - The pointer to the function
+  *@return fun - The crunch command to get
   */
-int (*getFun(string name))()
+crunchCommand getFun(string name)
 {
     for(int index=0; index<members; index++)
     {
-        if(name.substr(1,name.length())==funcNames[index])   //Gets rid of the crunch symbol
+        if(name.substr(1,name.length())==allCommands[index].funcName)   //Gets rid of the crunch symbol
         {
-            return arrPts[index];
+            return allCommands[index];
         }//END name match if
     }//END full array search
 }//END getFun()

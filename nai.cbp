@@ -35,7 +35,9 @@
 		<Unit filename="HEADER/Crunch/crunchLand.h" />
 		<Unit filename="HEADER/Crunch/voids.h" />
 		<Unit filename="HEADER/aiCore.h" />
+		<Unit filename="HEADER/mainHelper.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mainHelper.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

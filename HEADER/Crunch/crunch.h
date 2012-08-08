@@ -44,8 +44,8 @@ void executeCrunch()
 {
     if(cc.length()>0)
     {
-        getFun(cc)();//Executes the crunch command with the name of cc.
+        getFun(cc).execute();//Executes the crunch command with the name of cc.
     }
     else
-        getFun("#intro")();//Help function
+        getFun("#intro").execute();//Help function
 }
