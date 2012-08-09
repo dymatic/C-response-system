@@ -1,5 +1,5 @@
 /*
-*Verison 4.5 - mantic
+*Verison 4.7 - mantic
 *mainHelper.h
 *
 *Mainhelper helps main, thus the name. Utilities for parsing command
@@ -14,10 +14,11 @@ const int gnus=3;//How many command line options there are
 const string defPath = "No configuration file loaded";//The default path that conf uses
 
 //*Configuration file utilities*/
-const int options=3;//The number of options in the configuration file
+const int options=4;//The number of options in the configuration file
 string optTrigs[options]= {"allow learn",
                            "allow crunch",
-                           "allow explicit"
+                           "allow explicit",
+                           "assume crucial"
                           };//What
 bool settings[options];
 string conf=defPath;//The path to the configuration file
@@ -64,11 +65,12 @@ struct config
         }
         reader.close();
     }
-    void loadConfig(bool&wl, bool&ac, bool&exl)
+    void loadConfig(bool&wl, bool&ac, bool&exl, bool &asc)
     {
         wl= settings [0];
         ac= settings [1];
         exl=settings [2];
+        asc=settings [3];
         cout<< "Loading configuration settings"<<endl<<endl;
     }
 };

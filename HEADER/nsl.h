@@ -1,5 +1,6 @@
+
 /*
-*This software is licensed under the Noran Restricted Public License (0.02)
+*This software is licensed under the GNU General Public License(V2)
 *Author: Norton "dymatic" Jenkins <kzzear@hotmail.com>
 */
 #include <iostream>
@@ -201,4 +202,28 @@ void rmComment(string &comment, char *delim)
         }
 
     }
+}
+
+/**
+*Splits a string on a given character, returning an array equal to the split string.
+*@param message - The string to split from
+*@param delim - What to split on
+*@return vStr - The vector of strings split from the message
+*/
+vector<string> splitOn(string message, string delim)
+{
+
+    vector<string> rString(0);
+
+    for(int index=0; message.find(delim)!=-1; index++)
+    {
+        rString.push_back(message.substr(0, message.find(delim)));
+        message = message.substr(message.find(delim)+1, message.length());
+    }
+
+    if(message.find("_")!=-1)//splitOn should not be used with whole IO identifier strings
+        message = message.substr(0, message.find("_")-1);
+
+    rString.push_back(message);
+    return rString;
 }

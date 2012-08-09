@@ -18,15 +18,57 @@ using namespace std;
 /*STATS*/
 int wing;//Chance to guess
 int globalCounter;//Position in arrays
+
+const int chcTon=0;//The chance to not reply
+string crucialString=":crucial";
+string wtSpace="";//Used in replaceAll
+bool ASSUME_CRITICAL;
 /*STRINGS*/
 string fileName;//Path to learn file
 
-string input [10000];
-string output[10000];
+//!The new holder of the strings
+struct out
+{
+    string input;
+    string output;
+    bool crucial;
+
+    out(string in, string out, bool c)
+    {
+        input=in;
+        output=out;
+        crucial=c;
+    }
+    out() {}
+};
+
+out strings[10000];
 
 /*RESOURCES*/
 
 /*FUNCTION IMPLEMENTATIONS*/
+/**
+*Sets the state of ASSUME_CRITICAL.
+*ASSUME_CRITICAL will not matter unless chcTon is changed.
+*@param tOrF - The state to set it
+*/
+void setAC(bool tOrF)
+{
+    ASSUME_CRITICAL=tOrF;
+}
+
+/**
+*Searches for and fulfills the crucial string trip.
+*@param &out - The reference to the string that gets searched in.
+*/
+void handleCrucial(string &out)
+{
+    if(out.find(crucialString)!=-1)
+    {
+        strings[globalCounter].crucial=(ASSUME_CRITICAL) ? true : false;
+        replaceAll(out, crucialString, wtSpace);
+    }
+}
 /**
 *At setupStrings() there can be a wildcard string where one response is chosen over another.
 *%is the delimiter for the wildcard.
@@ -62,11 +104,13 @@ string getWildCard(string message)
 */
 void addStr(string msg)
 {
-    input[globalCounter]=msg.substr(0,msg.find("_"));
+    handleCrucial(msg);
+
+    strings[globalCounter].input=msg.substr(0,msg.find("_"));
 
     if(!hasWildCard(msg))
-        output[globalCounter]=msg.substr(msg.find("_")+1,msg.length());
-    else output[globalCounter]=getWildCard(msg);
+        strings[globalCounter].output=msg.substr(msg.find("_")+1,msg.length());
+    else strings[globalCounter].output=getWildCard(msg);
 
     globalCounter++;
 }
@@ -79,11 +123,14 @@ void addStr(string msg)
 */
 void addStr(string in, string out)
 {
-    input[globalCounter] = in;
+
+    handleCrucial(out);
+
+    strings[globalCounter].input = in;
 
     if(!hasWildCard(out))
-        output[globalCounter]=out.substr(out.find("_")+1,out.length());
-    else output[globalCounter]=getWildCard(out);
+        strings[globalCounter].output=out.substr(out.find("_")+1,out.length());
+    else strings[globalCounter].output=getWildCard(out);
 
     globalCounter++;
 }
@@ -98,11 +145,13 @@ void addStrArr(string in[], string out, int argInput)
 {
     for(int index=0; index<argInput; index++)
     {
-        input[globalCounter]=in[index];
+        strings[globalCounter].input=in[index];
+
+        handleCrucial(out);
 
         if(!hasWildCard(out))
-            output[globalCounter]=out;
-        else output[globalCounter]=getWildCard(out);
+            strings[globalCounter].output=out;
+        else strings[globalCounter].output=getWildCard(out);
         globalCounter++;
     }
 }
@@ -115,37 +164,18 @@ void addStrVec(vector<string> inputs, string out)
 {
     for(int index=0; index<inputs.size(); index++)
     {
-        input[globalCounter]=inputs[index];
+        strings[globalCounter].input=inputs[index];
+
+        handleCrucial(out);
 
         if(!hasWildCard(out))
-            output[globalCounter]=out;
-        else output[globalCounter]=getWildCard(out);
+            strings[globalCounter].output=out;
+        else strings[globalCounter].output=getWildCard(out);
+
         globalCounter++;
     }
 }
-/**
-*Splits a string on a given character, returning an array equal to the split string.
-*@param message - The string to split from
-*@param delim - What to split on
-*@return vStr - The vector of strings split from the message
-*/
-vector<string> splitOn(string message, string delim)
-{
 
-    vector<string> rString(0);
-
-    for(int index=0; message.find(delim)!=-1; index++)
-    {
-        rString.push_back(message.substr(0, message.find(delim)));
-        message = message.substr(message.find(delim)+1, message.length());
-    }
-
-    if(message.find("_")!=-1)//splitOn should not be used with whole IO identifier strings
-        message = message.substr(0, message.find("_")-1);
-
-    rString.push_back(message);
-    return rString;
-}
 
 /**
   *Loads a learn file into RAM for use with response formulation.
@@ -219,7 +249,8 @@ void exlLearn(string toParse)
   *@return response - The response, "learn(toReplyTo)" if a learning is required. The
   *                  thought process here is that main or a wrapper can handle it (makes function portable).
   *                  Since version 4.0, this function can return "exlLearned" if it has been
-  *                  explicitly taught.
+  *                  explicitly taught. In 4.7 this can also return "chTon not got" which means the string was
+  *                  not crucial and the chance was not gotten.
   */
 string formulateResponse(string toReplyTo)
 {
@@ -233,15 +264,21 @@ string formulateResponse(string toReplyTo)
 
     for(unsigned int index=0; index<globalCounter; index++)
     {
-        if(buff.find(input[index])!=-1&&input[index].length()>1)   //Exact match (input file INSIDE buff)
+        if(buff.find(strings[index].input)!=-1&&strings[index].input.length()>1)   //Exact match (input file INSIDE buff)
         {
-            return output[index];
+            if(chcTon<=0)
+                return strings[index].output;
+
+            if(strings[index].crucial||rand()%chcTon==0)//If crucial string or got the random number
+                return strings[index].output;
+            else return "chTon not got";
+
             good=true;
         }
 
-        else if((input[index].length()==buff.length())&&(rand()%wing==5))   //WING
+        else if((strings[index].input.length()==buff.length())&&(rand()%wing==5))   //WING
         {
-            return output[index];//If the lengths are the same
+            return strings[index].output;//If the lengths are the same
             good=true;
         }
     }

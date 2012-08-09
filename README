@@ -25,17 +25,14 @@ The name is based on a major feature at that revision. For example, WING was the
 nai will always be the name of the executable despite the earlier name "AI" and the next version being called "mantic".
 
 VERSION
-mantic - 4.6: Although version 2.0 was the largest commit, this is the most important in the program's history. There were numerous bugfixes for portability and readability,
-                    added libraries, functions, and structures, and, as promised, a facelift for crunchLand. Wildcard outputs were another inclusion.
+mantic - 4.7: Rewrote strings and added crucial strings as well as rewriting main
 
 FUTURE PLANS
 In future versions of semantic: Add function cleanFile() so the learn file can optimize itself for size. I also want to add 
 the "am" keyword to the semantic parsing as well as adding a bunch more options for the configuration file.
-I will clean mainHelper more by removing the config structure once I get a chance to rewrite main.cpp
 
 In the next release of nAI:
-Rewritten main
-"am" semantic parse
+Mainresposne addition to use arrays for formulateResponse's return codes
 
 4.x will be the biggest age of development for nai
 yet.
@@ -49,7 +46,7 @@ bin/Release/nai - Executable file
 HEADER/aiCore.h - Utilities relating directly to the talking and learning part of the program.
 HEADER/mainHelper.h - Utilities used for command line options and startup.
 HEADER/nsl.h - A modified nsl.h (see nsl project for more information)
-
+HEADER/mainResponse.h - Handles output from HEADER/crunch/* and formulateResponse to pipe information to the bot
 HEADER/Crunch/crunch.h - Top-level abstractions for crunchLand
 HEADER/Crunch/crunchLand.h - Lowest level. Returns the functions relating to crunches.
 HEADER/Crunch/voids.h - No-mans-land, basically. Holds big things for crunchLand and GNU commands.
@@ -79,3 +76,4 @@ mantic - (4.3): Added utilities, cleaned setupStrings(), removed variables to ma
 mantic - (4.4): Added the infrastructure for cLineOption but forgot to commit.
 matic  - (4.5): Added configuration file and cleaned main, resulting in a HUGE mess called mainHelper.
 mantic - (4.6): Fixed a lot of bugs and added more portability and convenience features than are countable. Added wildcard outputs
+mantic - (4.7): Added crucial strings, rewrote string arrays in aiCore, prepared for sanitze() function

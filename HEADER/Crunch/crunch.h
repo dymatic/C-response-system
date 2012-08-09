@@ -1,12 +1,12 @@
-#include <iostream>
-#include <cstdlib>
-#include "crunchLand.h"
-using namespace std;
 /*
   *Provides a programmable set of functions that
   *work as plugins for the main program. They are run with
   *#plugin syntax from the main prompt.
   */
+#include <iostream>
+#include <cstdlib>
+#include "crunchLand.h"
+using namespace std;
 
 /*Variables*/
 string cc;//The crunch command.
